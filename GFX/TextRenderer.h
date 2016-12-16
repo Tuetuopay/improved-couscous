@@ -28,10 +28,11 @@
 #include <list>
 #include <glm/glm.hpp>
 
+#include "GFX/GL/Shader.h"
+
 namespace GFX {
 
 class TextLabel;
-namespace GL { class Shader; }
 
 class TextRenderer {
 public:
@@ -53,4 +54,6 @@ private:
 };
 
 }
+
+#endif
 

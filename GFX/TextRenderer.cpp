@@ -22,6 +22,7 @@
  **/
 
 #include "GFX/TextRenderer.h"
+#include "GFX/TextLabel.h"
 
 namespace GFX {
 
@@ -33,7 +34,7 @@ void TextRenderer::render(const glm::mat4 &matVP) {
 
 	for (std::shared_ptr<TextLabel> label : _labels) {
 		matMVP = label->model() * matVP;
-		_shader->pushUniform("matMVP", 1, GL_FALSE, &matMVP, 4);
+		_shader.pushUniform("matMVP", 1, GL_FALSE, &matMVP[0][0], 4);
 		label->render();
 	}
 }
