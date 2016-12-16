@@ -111,6 +111,7 @@ std::shared_ptr<TGA> loadTGA(const std::string &file) {
 	bool ret = false;
 
 	FILE *fi = NULL;
+	FILE *ftest = NULL;
 	if (!(fi = fopen(file.c_str(), "rb"))) return nullptr;
 
 	// Read TGA header
@@ -121,8 +122,8 @@ std::shared_ptr<TGA> loadTGA(const std::string &file) {
 	if (fread(tga->header, 1, sizeof(tga->header), fi) != sizeof(tga->header)) goto end;
 
 	// Compute stuff
-	tga->w = tga->header[1] * 0xFF + tga->header[0];
-	tga->h = tga->header[3] * 0xFF + tga->header[2];
+	tga->w = tga->header[1] * 0x100 + tga->header[0];
+	tga->h = tga->header[3] * 0x100 + tga->header[2];
 	tga->bpp = tga->header[4];
 
 	// Check that this is correct
