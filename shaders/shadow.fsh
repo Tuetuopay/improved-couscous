@@ -25,6 +25,7 @@ void main() {
 	}
 	else dimming = 0.5;
 
-	fragColor = texture(tex, ex_UV) * dimming;
+	fragColor = texture(tex, ex_UV);
+	fragColor.rgb *= dimming;
 }
 
