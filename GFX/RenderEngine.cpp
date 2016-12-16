@@ -102,9 +102,6 @@ int RenderEngine::setup() {
 	// Backface culling
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
-	// Alpha blending
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_BLEND);
 
 	// Matricies
 	_matProj = glm::perspective(glm::radians(90.f), float(16.f / 9.f), 0.1f, 100.f);
@@ -250,7 +247,9 @@ void RenderEngine::render3D(GL::Shader *shader) {
 	shader->pushUniform("lightMVP", 1, GL_FALSE, &_matMVP[0][0], 4);
 	_cube->render();
 
+	glDisable(GL_CULL_FACE);
 	_textRenderer->render(_matProj * _matView);
+	glEnable(GL_CULL_FACE);
 
 #define COUNT 10
 #if 1==2
