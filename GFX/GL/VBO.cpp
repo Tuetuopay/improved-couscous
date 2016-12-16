@@ -22,6 +22,7 @@
  **/
 
 #include <type_traits>
+#include <string.h>
 #include "VBO.h"
 
 namespace GFX { namespace GL {
