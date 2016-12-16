@@ -36,7 +36,7 @@ void TextLabel::makeVBO() {
 	static const GLuint i[] = {2,1,0, 0,3,2};
 
 	if (_texture == 0)   _texture = GL::textureFromTGA("textures/ascii.tga");
-	if (_vbo == nullptr) _vbo = std::shared_ptr<GL::VBO>(new GL::VBO(v, t, nullptr, nullptr, 4, i, 6, _texture));
+	if (_vbo == nullptr) _vbo = std::shared_ptr<GL::VBO>(new GL::VBO(v, t, nullptr, nullptr, 4, i, 6, _texture, GL_TRIANGLES, 2));
 
 	// Allocate a BIG buffer for all vectors
 	// xy will be the letter position, while zw will be the texture uv displacement
@@ -55,7 +55,7 @@ void TextLabel::makeVBO() {
 			charPos.x = float(int(charPos.x + 4) % 4);
 			break;
 		default:
-			vecs[visibleCount] = glm::vec4(charPos.x, charPos.y, _text[i] % 16, _text[i] / 16);
+			vecs[visibleCount] = glm::vec4(charPos.x, charPos.y, _text[i] % 16, 15.f - _text[i] / 16);
 			// TODO : use actual character width
 			charPos.x += 1.f;
 			visibleCount++;
