@@ -50,10 +50,8 @@ public:
 
 	template<typename T>
 	void setInstanced(const std::list<T*> &data);
-	//void setInstanced(const std::list<glm::mat4*> &matModel);
-	//void setInstanced(const std::list<glm::vec4*> &data);
-	//void setInstanced(const std::list<float*> &data);
-	//void setInstanced(const std::list<int*> &data);
+	template<typename T>
+	void setInstanced(const T* data, const size_t &count);
 
 private:
 	GLuint _bufVertex, _bufTexture, _bufColors, _bufNormals,    /* VBOs */

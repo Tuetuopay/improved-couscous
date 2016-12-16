@@ -125,16 +125,30 @@ void VBO::setInstanced(const std::list<T*> &data) {
 		offset++;
 	}
 
+	setInstanced((T*)_instanceData, _nInstance);
+}
+
+template<typename T>
+void VBO::setInstanced(const T* data, const size_t &count) {
+	size_t elemSize = sizeof(T);
+	_nInstance = count;
+	_instanceData = (GLubyte*)data;
+
 	glBindVertexArray(_vao);
 	if (!_bufInstance) glGenBuffers(1, &_bufInstance);
 	glBindBuffer(GL_ARRAY_BUFFER, _bufInstance);
 	glBufferData(GL_ARRAY_BUFFER, elemSize * _nInstance, _instanceData, GL_DYNAMIC_DRAW);
 
 	// A mat4 has to be sent in 4 separate locations
-	if (std::is_same<T, glm::mat4>::value)
-		for (int i = 0; i < 4; i++) {
-			printf("%d\n", i);
-			glVertexAttribPointer(4 + i, 4, GL_FLOAT, GL_FALSE, elemSize, BUFFER_OFFSET(sizeof(glm::vec4) * i));
+	int location = 1;
+	if (std::is_same<T, glm::mat2>::value) location = 2;
+	if (std::is_same<T, glm::mat3>::value) location = 3;
+	if (std::is_same<T, glm::mat4>::value) location = 4;
+
+	if (location != 1)
+		for (int i = 0; i < location; i++) {
+			glVertexAttribPointer(4 + i, location, GL_FLOAT, GL_FALSE, elemSize,
+			                      BUFFER_OFFSET(sizeof(float) * location * i));
 			glVertexAttribDivisor(4 + i, 1);
 			glEnableVertexAttribArray(4 + i);
 		}
@@ -146,9 +160,22 @@ void VBO::setInstanced(const std::list<T*> &data) {
 }
 
 template void VBO::setInstanced<glm::mat4>(const std::list<glm::mat4*> &data);
+template void VBO::setInstanced<glm::mat3>(const std::list<glm::mat3*> &data);
+template void VBO::setInstanced<glm::mat2>(const std::list<glm::mat2*> &data);
 template void VBO::setInstanced<glm::vec4>(const std::list<glm::vec4*> &data);
+template void VBO::setInstanced<glm::vec3>(const std::list<glm::vec3*> &data);
+template void VBO::setInstanced<glm::vec2>(const std::list<glm::vec2*> &data);
 template void VBO::setInstanced<float>(const std::list<float*> &data);
 template void VBO::setInstanced<int>(const std::list<int*> &data);
+
+template void VBO::setInstanced<glm::mat4>(const glm::mat4* data, const size_t &count);
+template void VBO::setInstanced<glm::mat3>(const glm::mat3* data, const size_t &count);
+template void VBO::setInstanced<glm::mat2>(const glm::mat2* data, const size_t &count);
+template void VBO::setInstanced<glm::vec4>(const glm::vec4* data, const size_t &count);
+template void VBO::setInstanced<glm::vec3>(const glm::vec3* data, const size_t &count);
+template void VBO::setInstanced<glm::vec2>(const glm::vec2* data, const size_t &count);
+template void VBO::setInstanced<float>(const float* data, const size_t &count);
+template void VBO::setInstanced<int>(const int* data, const size_t &count);
 
 void VBO::_checkData()	{
 	/* Vertex pointer: 2, 3, 4 */
