@@ -5,6 +5,8 @@ SRCS = main.cpp \
        GFX/GL/VBO.cpp \
 	   GFX/GL/Texture.cpp \
 	   GFX/TGA.cpp \
+	   GFX/TextLabel.cpp \
+	   GFX/TextRenderer.cpp \
 	   Game/GameEngine.cpp \
 	   GFX/RenderEngine.cpp \
 	   Input/InputManager.cpp \
