@@ -32,7 +32,7 @@ namespace GFX {
 GLuint TextLabel::_texture = 0;
 
 void TextLabel::makeVBO() {
-	static const float v[] = {0,0,0, 0,1,0, 1,1,0, 1,0,0},
+	static const float v[] = {0,0, 0,1, 1,1, 1,0},
 	                   t[] = {0,0, 0,1, 1,1, 1,0};
 	static const GLuint i[] = {2,1,0, 0,3,2};
 
