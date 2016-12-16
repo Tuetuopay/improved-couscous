@@ -26,11 +26,12 @@
 
 #include <memory>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>
 
-namespace GFX {
+#include "GFX/GL/VBO.h"
 
-namespace GL { class VBO; }
+namespace GFX {
 
 class TextLabel {
 public:
@@ -43,11 +44,16 @@ public:
 	// Render function
 	inline void render() const { _vbo->render(); }
 	inline glm::mat4 model() const {
-		return glm::scale(_scale, _scale, _scale) *
-		       glm::rotate(_rot.x, 1.f, 0.f, 0.f) *
-		       glm::rotate(_rot.y, 0.f, 1.f, 0.f) *
-		       glm::rotate(_rot.z, 0.f, 0.f, 1.f) *
-		       glm::translate(_pos);
+		return glm::scale(
+			glm::rotate(
+				glm::rotate(
+					glm::rotate(
+						glm::translate(
+							glm::mat4(1), _pos
+						), _rot.z, glm::vec3(0.f, 0.f, 1.f)
+					), _rot.y, glm::vec3(0.f, 1.f, 0.f)
+				), _rot.x, glm::vec3(1.f, 0.f, 0.f)
+			), glm::vec3(_scale, _scale, _scale));
 	}
 
 	// Getter/setters
@@ -78,7 +84,7 @@ private:
 
 	// VBO creator
 	void makeVBO();
-}
+};
 
 }
 
