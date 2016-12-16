@@ -29,14 +29,27 @@
 namespace GFX {
 
 GLuint TextLabel::_texture = 0;
+glm::vec2 TextLabel::_fontDescriptor[256] = {glm::vec2(0.f)};
 
 void TextLabel::makeVBO() {
 	static const float v[] = {0,0, 0,1, 1,1, 1,0},
 	                   t[] = {0,0, 0,1, 1,1, 1,0};
 	static const GLuint i[] = {2,1,0, 0,3,2};
 
-	if (_texture == 0)   _texture = GL::textureFromTGA("textures/ascii.tga");
-	if (_vbo == nullptr) _vbo = std::shared_ptr<GL::VBO>(new GL::VBO(v, t, nullptr, nullptr, 4, i, 6, _texture, GL_TRIANGLES, 2));
+	if (_texture == 0){
+		_texture = GL::textureFromTGA("textures/ascii.tga");
+		FILE *fi = NULL;
+		if (!(fi = fopen("textures/ascii.dat", "rb"))) {
+			std::cerr << "Failed to load ascii.dat" << std::endl;
+			for (int i = 0; i < 256; i++) _fontDescriptor[i].x = _fontDescriptor[i].y = 1.f;
+		}
+		else {
+			fread(_fontDescriptor, sizeof(glm::vec2), 256, fi);
+			fclose(fi);
+		}
+	}
+	if (_vbo == nullptr)
+		_vbo = std::shared_ptr<GL::VBO>(new GL::VBO(v, t, nullptr, nullptr, 4, i, 6, _texture, GL_TRIANGLES, 2));
 
 	// Allocate a BIG buffer for all vectors
 	// xy will be the letter position, while zw will be the texture uv displacement
@@ -56,8 +69,7 @@ void TextLabel::makeVBO() {
 			break;
 		default:
 			vecs[visibleCount] = glm::vec4(charPos.x, charPos.y, _text[i] % 16, 15.f - _text[i] / 16);
-			// TODO : use actual character width
-			charPos.x += 1.f;
+			charPos.x += _fontDescriptor[_text[i]].x;
 			visibleCount++;
 			break;
 		}

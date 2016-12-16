@@ -81,6 +81,7 @@ private:
 
 	// Text texture
 	static GLuint _texture;
+	static glm::vec2 _fontDescriptor[256];
 
 	// VBO creator
 	void makeVBO();
