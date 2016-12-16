@@ -32,8 +32,9 @@ void TextRenderer::render(const glm::mat4 &matVP) {
 	// Full MVP matrix
 	glm::mat4 matMVP;
 
+	_shader.useShader(true);
 	for (std::shared_ptr<TextLabel> label : _labels) {
-		matMVP = label->model() * matVP;
+		matMVP = matVP * label->model();
 		_shader.pushUniform("matMVP", 1, GL_FALSE, &matMVP[0][0], 4);
 		label->render();
 	}
