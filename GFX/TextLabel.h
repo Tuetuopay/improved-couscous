@@ -42,6 +42,13 @@ public:
 
 	// Render function
 	inline void render() const { _vbo->render(); }
+	inline glm::mat4 model() const {
+		return glm::scale(_scale, _scale, _scale) *
+		       glm::rotate(_rot.x, 1.f, 0.f, 0.f) *
+		       glm::rotate(_rot.y, 0.f, 1.f, 0.f) *
+		       glm::rotate(_rot.z, 0.f, 0.f, 1.f) *
+		       glm::translate(_pos);
+	}
 
 	// Getter/setters
 	inline const std::string& text() const { return _text; }

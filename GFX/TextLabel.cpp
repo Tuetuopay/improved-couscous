@@ -43,12 +43,6 @@ void TextLabel::makeVBO() {
 	// xy will be the letter position, while zw will be the texture uv displacement
 	glm::vec4 *vecs = new glm::vec4[_text.size()];
 
-	glm::mat4 common = glm::scale(_scale, _scale, _scale) *
-	                   glm::rotate(_rot.x, 1.f, 0.f, 0.f) *
-	                   glm::rotate(_rot.y, 0.f, 1.f, 0.f) *
-	                   glm::rotate(_rot.z, 0.f, 0.f, 1.f) *
-	                   glm::translate(_pos);
-
 	// Fill it
 	glm::vec2 charPos(0.f);
 	int visibleCount = 0;
