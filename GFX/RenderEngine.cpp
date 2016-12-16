@@ -38,11 +38,12 @@
 #include <glm/gtx/rotate_vector.hpp>
 
 #include "GFX/GL/Texture.h"
+#include "GFX/TextLabel.h"
 #include "Input/InputManager.h"
 #include "Input/Controller/FPSController.h"
 #include "Game/Entities/Camera.h"
 
-#define COUNT 256
+#define COUNT 30
 
 namespace GFX {
 
@@ -101,6 +102,9 @@ int RenderEngine::setup() {
 	// Backface culling
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
+	// Alpha blending
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
 
 	// Matricies
 	_matProj = glm::perspective(glm::radians(90.f), float(16.f / 9.f), 0.1f, 100.f);
@@ -176,6 +180,13 @@ int RenderEngine::setup() {
 	// TMP
 	_matModel = glm::scale(glm::vec3(0.5, 0.5, 0.5)) * glm::translate(glm::vec3(-0.5, 0, -0.5));
 
+	// Create the text renderer
+	_textRenderer = new TextRenderer();
+
+	// Test
+	std::shared_ptr<TextLabel> label(new TextLabel("This is a test!\nHello World", glm::vec3(0.f, 4.f, 0.f)));
+	_textRenderer->addLabel(label);
+
 	return 0;
 }
 
@@ -184,7 +195,7 @@ void RenderEngine::render() {
 	static float lightAngle = 0.f;
 
 	lightAngle += _gameData->dt;
-	_light.setPos(glm::rotate(glm::vec3(10, 10, 10), lightAngle, glm::vec3(0.0, 1.0, 0.0)));
+	_light.setPos(glm::rotate(glm::vec3(20, 20, 20), lightAngle, glm::vec3(0.0, 1.0, 0.0)));
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -200,8 +211,9 @@ void RenderEngine::render() {
 
 	// Bind FBO
 	_camera.frame(_gameData->dt);
-	//_matView = _camera.matrix();
-	_matView = glm::lookAt(glm::vec3(2.5f, 5.f, 7.5f), glm::vec3(0), glm::vec3(0, 1, 0));
+	_matView = _camera.matrix();
+	//_matView = glm::lookAt(glm::vec3(2.5f, 5.f, 7.5f), glm::vec3(0), glm::vec3(0, 1, 0));
+	//_matView = _light.matrix();
 	_matProj = glm::perspective(glm::radians(90.f), float(16.f / 9.f), 0.1f, 100.f);
 
 	glViewport(0, 0, 1280 * _scale, 720 * _scale);
@@ -237,6 +249,8 @@ void RenderEngine::render3D(GL::Shader *shader) {
 	_matMVP = biasMatrix * _matOrtho * _light.matrix();
 	shader->pushUniform("lightMVP", 1, GL_FALSE, &_matMVP[0][0], 4);
 	_cube->render();
+
+	_textRenderer->render(_matProj * _matView);
 
 #define COUNT 10
 #if 1==2

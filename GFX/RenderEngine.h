@@ -33,6 +33,7 @@ typedef struct GLFWwindow GLFWwindow;
 #include "GFX/GL/VBO.h"
 #include "GFX/GL/FBO.h"
 #include "GFX/GL/Shader.h"
+#include "GFX/TextRenderer.h"
 
 #include "Game/GameData.h"
 
@@ -88,6 +89,7 @@ private:
 
 	Game::GameEngine *_gameEngine;
 	Game::GameData   *_gameData;
+	TextRenderer *_textRenderer;
 
 	Game::Entities::Camera _camera, _light;
 	Input::Controller::FPSController _fpsController;
