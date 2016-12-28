@@ -32,8 +32,11 @@
 
 namespace Game {
 
-GameEngine::GameEngine()
- :_gameData({.dt = 0, .playerPos = glm::vec3(0, 0, 0), .yaw = 0, .pitch = 0}) {
+GameEngine::GameEngine() {
+	 _gameData.dt = 0;
+	 _gameData.playerPos = glm::vec3(0.0);
+	 _gameData.yaw = 0;
+	 _gameData.pitch = 0;
 	// Initialize the render engine
 	_renderEngine = GFX::RenderEngine::instance();
 	_renderEngine->setGameEngine(this);
