@@ -251,7 +251,6 @@ void RenderEngine::render3D(GL::Shader *shader) {
 	_textRenderer->render(_matProj * _matView);
 	glEnable(GL_CULL_FACE);
 
-#define COUNT 10
 #if 1==2
 	for (int x = -COUNT; x <= COUNT; x++)
 		for (int z = -COUNT; z <= COUNT; z++) {

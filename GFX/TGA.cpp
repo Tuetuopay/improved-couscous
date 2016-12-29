@@ -111,7 +111,6 @@ std::shared_ptr<TGA> loadTGA(const std::string &file) {
 	bool ret = false;
 
 	FILE *fi = NULL;
-	FILE *ftest = NULL;
 	if (!(fi = fopen(file.c_str(), "rb"))) return nullptr;
 
 	// Read TGA header

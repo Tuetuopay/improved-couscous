@@ -58,7 +58,7 @@ void TextLabel::makeVBO() {
 	// Fill it
 	glm::vec2 charPos(0.f);
 	int visibleCount = 0;
-	for (int i = 0; i < _text.size(); i++) {
+	for (unsigned int i = 0; i < _text.size(); i++) {
 		switch(_text[i]) {
 		case '\n':
 			charPos.x = 0.f;
@@ -69,7 +69,7 @@ void TextLabel::makeVBO() {
 			break;
 		default:
 			vecs[visibleCount] = glm::vec4(charPos.x, charPos.y, _text[i] % 16, 15.f - _text[i] / 16);
-			charPos.x += _fontDescriptor[_text[i]].x;
+			charPos.x += _fontDescriptor[(unsigned char)_text[i]].x;
 			visibleCount++;
 			break;
 		}

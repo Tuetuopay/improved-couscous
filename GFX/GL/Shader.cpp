@@ -149,13 +149,13 @@ void Shader::detachShader (std::string shaderName) {
 	glDetachShader (_programShader, _fragShader[shaderName]);
 }
 void Shader::attachAllShaders () {
-	for (int i = 0; i < _vertShader.size (); i++) {
+	for (unsigned int i = 0; i < _vertShader.size (); i++) {
 		attachShader (_shaderNames[i]);
 		attachShader (_shaderNames[i]);
 	}
 }
 void Shader::detachAllShaders () {
-	for (int i = 0; i < _vertShader.size (); i++) {
+	for (unsigned int i = 0; i < _vertShader.size (); i++) {
 		detachShader (_shaderNames[i]);
 		detachShader (_shaderNames[i]);
 	}

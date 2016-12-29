@@ -37,7 +37,7 @@ class TextLabel {
 public:
 	TextLabel(const std::string &text, const glm::vec3 &pos = glm::vec3(),
 	          const float &scale = 1.0, const glm::vec3 &rot = glm::vec3())
-	 : _text(text), _pos(pos), _rot(rot), _scale(scale), _vbo(nullptr) {
+	 : _vbo(nullptr), _text(text), _pos(pos), _rot(rot), _scale(scale) {
 		makeVBO();
 	}
 

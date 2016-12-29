@@ -30,9 +30,9 @@ namespace GFX { namespace GL {
 VBO::VBO (const float *vertices, const float *texture, const float *colors, const float *normals,
 		  int nVertices, const GLuint *indexes, int nIndexes, GLuint gltexture, GLenum drawMode,
 		  int vertexSize, int colorSize, int textureSize)
-	: _texture(gltexture), _nVertex(nVertices), _nIndexes(nIndexes), _nVertData(vertexSize),
+	: _texture(gltexture), _bufInstance(0), _nVertex(nVertices), _nIndexes(nIndexes), _nVertData(vertexSize),
 	  _nTexData(textureSize), _nColorData(colorSize), _mode(drawMode),
-      _bufInstance(0), _instanceData(nullptr)
+	  _instanceData(nullptr)
 {
 	_checkData();
 	_isTexEnabled = _isColEnabled = _isNormEnabled = _isIndxEnabled = false;
