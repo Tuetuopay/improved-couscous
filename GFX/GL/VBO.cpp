@@ -177,7 +177,7 @@ template void VBO::setInstanced<glm::vec2>(const glm::vec2* data, const size_t &
 template void VBO::setInstanced<float>(const float* data, const size_t &count);
 template void VBO::setInstanced<int>(const int* data, const size_t &count);
 
-void VBO::_checkData()	{
+void VBO::_checkData() {
 	/* Vertex pointer: 2, 3, 4 */
 	if (_nVertData < 2)  _nVertData = 2;
 	if (_nVertData > 4)  _nVertData = 4;

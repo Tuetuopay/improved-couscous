@@ -33,8 +33,7 @@
 
 namespace GFX { namespace GL {
 
-class Shader
-{
+class Shader {
 public:
 	/* By default, we will seek for shader files in the shaders/ folder
 	 * We are assuming that Vertex shader is programName.vsh

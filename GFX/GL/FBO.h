@@ -28,8 +28,7 @@
 
 namespace GFX { namespace GL {
 
-class FBO
-{
+class FBO {
 public:
 	FBO(double screenWidth, double screenHeight, bool renderTexture = true, bool depthTexture = true);
 	~FBO ();
