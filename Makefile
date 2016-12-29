@@ -20,7 +20,7 @@ LDFLAGS = -flto
 ifeq ($(OS),Windows_NT)
 	CC = i686-w64-mingw32-c++
 	CXX = i686-w64-mingw32-c++
-	CXXFLAGS += -mwindows
+	CXXFLAGS += -mwindows -D_USE_MATH_DEFINES
 
 	LDLIBS += -lglew32 -lglfw3 -lopengl32 -lgdi32
 	LDFLAGS += -static-libstdc++ -static-libgcc
