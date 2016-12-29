@@ -22,10 +22,17 @@
  **/
 
 #include <iostream>
+#ifdef OS_WIN32
+#include <windows.h>
+#endif
 
 #include "Game/GameEngine.h"
 
+#ifdef OS_WIN32
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+#else
 int main() {
+#endif
 	Game::GameEngine gameEngine;
 
 	int ret = gameEngine.setup();
