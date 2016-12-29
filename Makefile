@@ -12,12 +12,34 @@ SRCS = main.cpp \
 	   Input/InputManager.cpp \
 	   Input/Controller/FPSController.cpp
 
-CC = c++
-CXX = c++
-CXXFLAGS = -Wall -O2 -g -std=c++14 -iquote. -MMD -MP -flto
+CXXFLAGS = -Wall -O2 -g -std=c++14 -iquote. -MMD -MP
 
-LDLIBS = -framework GLUT -framework OpenGL -lglfw3 -lglew
+LDLIBS =
 LDFLAGS = -flto
+
+ifeq ($(OS),Windows_NT)
+	CC = i686-w64-mingw32-c++
+	CXX = i686-w64-mingw32-c++
+	CXXFLAGS += -mwindows
+
+	LDLIBS += -lglew32 -lglfw3 -lopengl32 -lgdi32
+	LDFLAGS += -static-libstdc++ -static-libgcc
+
+	CXXFLAGS += -DOS_WIN32
+else
+	CC = c++
+	CXX = c++
+
+	UNAME = $(shell uname -s)
+	ifeq ($(UNAME),Linux)
+		LDLIBS += -lglfw -lGLEW -lm -lGL
+		CXXFLAGS += -DOS_LINUX
+	endif
+	ifeq ($(UNAME),Darwin)
+		LDLIBS += -framework OpenGL -lglfw3 -lglew
+		CXXFLAGS += -DOS_OSX
+	endif
+endif
 
 OUTDIR = out
 
