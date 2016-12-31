@@ -79,7 +79,7 @@ private:
 	GLFWwindow *_window;
 	glm::mat4 _matProj, _matOrtho, _matView, _matModel, _matMVP;
 	GFX::GL::VBO *_cube, *_square;
-	GFX::GL::Shader *_shader, *_shaderSSAO, *_shaderDepth;
+	GFX::GL::Shader *_shaderShadow, *_shaderSSAO, *_shaderDepth;
 	GFX::GL::FBO *_fbo, *_fboLight;
 	// Window size
 	int _winW, _winH;

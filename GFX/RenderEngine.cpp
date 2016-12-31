@@ -144,10 +144,10 @@ int RenderEngine::setup() {
 	_square->setTexture(0);
 
 	// Shader
-	_shader = new GL::Shader("shadow");
-	_shader->pushUniform("matMVP", 1, GL_FALSE, &_matMVP[0][0], 4);
-	_shader->pushUniform("tex", 0);
-	_shader->pushUniform("tex_shadow", 1);
+	_shaderShadow = new GL::Shader("shadow");
+	_shaderShadow->pushUniform("matMVP", 1, GL_FALSE, &_matMVP[0][0], 4);
+	_shaderShadow->pushUniform("tex", 0);
+	_shaderShadow->pushUniform("tex_shadow", 1);
 
 	_shaderSSAO = new GL::Shader("ssao");
 	_shaderSSAO->pushUniform("tex_color", 0);
@@ -215,10 +215,10 @@ void RenderEngine::render() {
 
 	glViewport(0, 0, 1280 * _scale, 720 * _scale);
 	_fbo->bind();
-	_shader->useShader(true);
+	_shaderShadow->useShader(true);
 	_fboLight->bindDepth(1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	render3D(_shader);
+	render3D(_shaderShadow);
 
 	_fbo->unbind();
 	_shaderSSAO->useShader(true);
@@ -316,7 +316,9 @@ void RenderEngine::processScroll(GLFWwindow *window, double dx, double dy) {
 
 RenderEngine::~RenderEngine() {
 	delete _cube;
-	delete _shader;
+	delete _shaderShadow;
+	delete _shaderSSAO;
+	delete _shaderDepth;
 
 	glfwTerminate();
 }
