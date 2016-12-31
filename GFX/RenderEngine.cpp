@@ -95,7 +95,7 @@ int RenderEngine::setup() {
 	_scale = float(actualW) / _winW;
 	std::cout << "scale = " << _scale << std::endl;
 
-	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.4f, 1.0f);
 	// Z buffer
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -149,10 +149,15 @@ int RenderEngine::setup() {
 	_shaderShadow->pushUniform("tex", 0);
 	_shaderShadow->pushUniform("tex_shadow", 1);
 
+	_shaderColor = new GL::Shader("color");
+	_shaderColor->pushUniform("matMVP", 1, GL_FALSE, &_matMVP[0][0], 4);
+	_shaderColor->pushUniform("tex", 0);
+
 	_shaderSSAO = new GL::Shader("ssao");
 	_shaderSSAO->pushUniform("tex_color", 0);
 	_shaderSSAO->pushUniform("tex_depth", 1);
 	_shaderSSAO->pushUniform("tex_shadow", 2);
+	_shaderSSAO->pushUniform("tex_shadow_proj", 3);
 	_shaderSSAO->pushUniform("camerarange", (GLfloat)0.1, (GLfloat)100.0);
 	_shaderSSAO->pushUniform("screensize", (GLfloat)_winW, (GLfloat)_winH);
 
@@ -160,7 +165,8 @@ int RenderEngine::setup() {
 
 	// FBO
 	_fbo = new GL::FBO(1280 * _scale, 720 * _scale);
-	_fboLight = new GL::FBO(1024, 1024, false, true);
+	_fboShadow = new GL::FBO(1280 * _scale, 720 * _scale);
+	_fboLight = new GL::FBO(1024, 1024, false, true, true);
 
 	/*
 	glfwSetKeyCallback(_window, processKeypress);
@@ -214,7 +220,13 @@ void RenderEngine::render() {
 	_matProj = glm::perspective(glm::radians(90.f), float(16.f / 9.f), 0.1f, 100.f);
 
 	glViewport(0, 0, 1280 * _scale, 720 * _scale);
+
 	_fbo->bind();
+	_shaderColor->useShader(true);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	render3D(_shaderColor);
+
+	_fboShadow->bind();
 	_shaderShadow->useShader(true);
 	_fboLight->bindDepth(1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -227,6 +239,7 @@ void RenderEngine::render() {
 	_fbo->bindRender(0);
 	_fbo->bindDepth(1);
 	_fboLight->bindDepth(2);
+	_fboShadow->bindRender(3);
 	_square->render();
 
 	glfwSwapBuffers(_window);

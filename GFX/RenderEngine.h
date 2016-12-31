@@ -79,8 +79,8 @@ private:
 	GLFWwindow *_window;
 	glm::mat4 _matProj, _matOrtho, _matView, _matModel, _matMVP;
 	GFX::GL::VBO *_cube, *_square;
-	GFX::GL::Shader *_shaderShadow, *_shaderSSAO, *_shaderDepth;
-	GFX::GL::FBO *_fbo, *_fboLight;
+	GFX::GL::Shader *_shaderShadow, *_shaderSSAO, *_shaderDepth, *_shaderColor;
+	GFX::GL::FBO *_fbo, *_fboLight, *_fboShadow;
 	// Window size
 	int _winW, _winH;
 	float _scale; // HIDPI scaling factor

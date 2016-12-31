@@ -7,7 +7,7 @@ in vec4 ex_Shadow;
 out vec4 fragColor;
 
 uniform sampler2D tex;
-uniform sampler2D tex_shadow;
+uniform sampler2DShadow tex_shadow;
 
 void main() {
 	float dimming = 1.0;
@@ -19,13 +19,10 @@ void main() {
 	vec2 ex_ShadowProj = ex_Shadow.xy / ex_Shadow.w;
 	//if (ex_ShadowProj.x >= 0.0 && ex_ShadowProj.x <= 1.0 &&
 	//    ex_ShadowProj.y >= 0.0 && ex_ShadowProj.y <= 1.0) {
-	if (length(ex_ShadowProj - vec2(0.5, 0.5)) < 0.5) {
-		if (textureProj(tex_shadow, ex_Shadow.xyw).x < (ex_Shadow.z - 0.005) / ex_Shadow.w)
-			dimming = 0.5;
-	}
+	if (length(ex_ShadowProj - vec2(0.5, 0.5)) < 0.5)
+		dimming = mix(0.5, 1.0, textureProj(tex_shadow, ex_Shadow - vec4(0.0, 0.0, 0.005, 0.0)));
 	else dimming = 0.5;
 
-	fragColor = texture(tex, ex_UV);
-	fragColor.rgb *= dimming;
+	fragColor = vec4(dimming);
 }
 

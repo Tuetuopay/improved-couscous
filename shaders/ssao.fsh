@@ -8,6 +8,7 @@ out vec4 fragColor;
 uniform sampler2D tex_color;
 uniform sampler2D tex_depth;
 uniform sampler2D tex_shadow;
+uniform sampler2D tex_shadow_proj;
 
 // Static parameters
 uniform vec2 camerarange;
@@ -78,10 +79,17 @@ void main() {
 		fragColor.rgb = ao * texture(tex_color, ex_UV.st).rgb * 1.2;
 	}
 #else
-	fragColor.rgb = ao * texture(tex_color, ex_UV.st).rgb * 1.2;
+	float alpha = 0.0;
+	ivec2 xy = ivec2(-3, -3);
+	for (xy.x = -3; xy.x <= 3; xy.x++)
+		for (xy.y = -3; xy.y <= 3; xy.y++)
+			alpha += texture(tex_shadow_proj, ex_UV.st + vec2(2.0 / 1280.0, 2.0 / 720.0) * xy).a;
+	alpha /= 49.0;
+	fragColor.rgb = ao * alpha * texture(tex_color, ex_UV.st).rgb * 1.2;
 
 	if (ex_UV.s <= 1.0/6.0 && ex_UV.t <= 1.0/6.0) {
-		fragColor.rgb = vec3(1, 1, 1) * texture(tex_shadow, ex_UV.st * 6.0).r;
+		// fragColor.rgb = vec3(1, 1, 1) * texture(tex_shadow, ex_UV.st * 6.0).r;
+		fragColor.rgb = vec3((ao > 0.9 || ao < 0.1) ? 1.0 : 0.0);
 	}
 #endif
 }
