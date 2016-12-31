@@ -25,13 +25,13 @@
 
 namespace GFX { namespace GL {
 
-FBO::FBO (double screenWidth, double screenHeight, bool renderTexture, bool depthTexture)
+FBO::FBO (double screenWidth, double screenHeight, bool renderTexture, bool depthTexture, bool compareRefToTexture)
  : _w(screenWidth), _h(screenHeight), _renderTexture(0), _depthTexture(0) {
 	glGenFramebuffers (1, &_bufID);
 	glBindFramebuffer (GL_FRAMEBUFFER, _bufID);
 
 	if (renderTexture) addRenderTexture();
-	if (depthTexture)  addDepthTexture();
+	if (depthTexture)  addDepthTexture(compareRefToTexture);
 
 	glBindTexture (GL_TEXTURE_2D, 0);
 	glBindFramebuffer (GL_FRAMEBUFFER, 0);
@@ -50,7 +50,7 @@ void FBO::addRenderTexture() {
 		GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _renderTexture, 0
 	);
 }
-void FBO::addDepthTexture() {
+void FBO::addDepthTexture(bool compareRefToTexture) {
 	glGenTextures (1, &_depthTexture);
 	glBindTexture(GL_TEXTURE_2D, _depthTexture);
 	// No texel interpolation
@@ -59,7 +59,8 @@ void FBO::addDepthTexture() {
 	// Clamping tex coord to [0.0, 1.0]
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+	if (compareRefToTexture)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, _w, _h, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 	glFramebufferTexture2D (
 		GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,  GL_TEXTURE_2D, _depthTexture, 0

@@ -30,11 +30,13 @@ namespace GFX { namespace GL {
 
 class FBO {
 public:
-	FBO(double screenWidth, double screenHeight, bool renderTexture = true, bool depthTexture = true);
+	FBO(double screenWidth, double screenHeight,
+	    bool renderTexture = true, bool depthTexture = true, bool compareRefToTexture = false);
 	~FBO ();
 
 	void addRenderTexture();
-	void addDepthTexture();
+	// Set argument to true if you plan to use it as a sampler2DShadow in a shader
+	void addDepthTexture(bool compareRefToTexture = false);
 
 	void bind ();
 	void unbind ();
