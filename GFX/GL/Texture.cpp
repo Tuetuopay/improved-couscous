@@ -37,7 +37,6 @@ GLuint textureFromTGA(std::shared_ptr<GFX::TGA> tga) {
 	             0, tga->bpp == 24 ? GL_BGR : GL_BGRA, GL_UNSIGNED_BYTE, tga->data.get());
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glGenerateMipmap(GL_TEXTURE_2D);
 
 	return tex;
 }
