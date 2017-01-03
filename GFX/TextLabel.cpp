@@ -62,7 +62,7 @@ void TextLabel::makeVBO() {
 		switch(_text[i]) {
 		case '\n':
 			charPos.x = 0.f;
-			charPos.y += 1.f;
+			charPos.y -= 1.f;
 			break;
 		case '\t':
 			charPos.x = float(int(charPos.x + 4) % 4);
