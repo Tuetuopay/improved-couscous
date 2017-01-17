@@ -10,7 +10,8 @@ SRCS = main.cpp \
 	   Game/GameEngine.cpp \
 	   GFX/RenderEngine.cpp \
 	   Input/InputManager.cpp \
-	   Input/Controller/FPSController.cpp
+	   Input/Controller/FPSController.cpp \
+	   Models/Model.cpp
 
 CXXFLAGS = -Wall -O2 -g -std=c++14 -iquote. -MMD -MP
 
