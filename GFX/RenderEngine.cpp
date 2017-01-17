@@ -106,7 +106,7 @@ int RenderEngine::setup() {
 	// Matricies
 	_matProj = glm::perspective(glm::radians(90.f), float(16.f / 9.f), 0.1f, 100.f);
 	//_matOrtho = glm::ortho(-15.0, 15.0, -15.0, 15.0, 0.0, 50.0);
-	_matOrtho = glm::perspective(glm::radians(45.f), 1.f, 1.f, 50.f);
+	_matOrtho = glm::perspective(glm::radians(45.f), 1.f, 1.f, 60.f);
 	_matView = _camera.matrix();
 	// _matView = glm::lookAt(glm::vec3(2.5f, 5.f, 7.5f), glm::vec3(0), glm::vec3(0, 1, 0));
 	_matModel = glm::mat4(1.f);
