@@ -54,11 +54,9 @@ void TextLabel::makeVBO() {
 
 	// Allocate a BIG buffer for all vectors
 	// xy will be the letter position, while zw will be the texture uv displacement
-	static std::vector<glm::vec4> vecs;
-	static int lastSize = 0;
-	if (lastSize < _text.size()) {
-		vecs.reserve(_text.size());
-		lastSize = _text.size();
+	if (_lastSize < _text.size()) {
+		_vecs.reserve(_text.size());
+		_lastSize = _text.size();
 	}
 
 	// Fill it
@@ -74,7 +72,7 @@ void TextLabel::makeVBO() {
 			charPos.x = float(int(charPos.x + 4) % 4);
 			break;
 		default:
-			vecs[visibleCount] = glm::vec4(charPos.x, charPos.y, _text[i] % 16, 15.f - _text[i] / 16);
+			_vecs[visibleCount] = glm::vec4(charPos.x, charPos.y, _text[i] % 16, 15.f - _text[i] / 16);
 			charPos.x += _fontDescriptor[(unsigned char)_text[i]].x;
 			visibleCount++;
 			break;
@@ -82,7 +80,7 @@ void TextLabel::makeVBO() {
 	}
 
 	// Call the "raw array" method
-	_vbo->setInstanced(vecs.data(), visibleCount);
+	_vbo->setInstanced(_vecs.data(), visibleCount);
 }
 
 }
