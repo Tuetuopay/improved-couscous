@@ -56,11 +56,7 @@ void TextLabel::makeVBO() {
 	// xy will be the letter position, while zw will be the texture uv displacement
 	static std::vector<glm::vec4> vecs;
 	static int lastSize = 0;
-	static int expansionCount = 0;
 	if (lastSize < _text.size()) {
-		expansionCount++;
-		std::cout << "Expanded buffer " << expansionCount << " times (" <<
-			lastSize << " -> " << _text.size() << ")" << std::endl;
 		vecs.reserve(_text.size());
 		lastSize = _text.size();
 	}
