@@ -221,7 +221,11 @@ void RenderEngine::render() {
 	double fps = 0;
 	for (int i = 0; i < 60; i++) fps += _dts[i];
 	fps /= 60.0;
-	_labelFPS->setText("FPS = " + std::to_string(1.f / fps) + "\nx,y,z = TODO");
+	_labelFPS->setText(
+		"FPS = " + std::to_string(1.f / fps) + "\nx,y,z = (" +
+		std::to_string(_camera.pos().x) + ", " + std::to_string(_camera.pos().y) +
+		", " + std::to_string(_camera.pos().z) + ")"
+	);
 
 	glEnable(GL_DEPTH_TEST);
 
