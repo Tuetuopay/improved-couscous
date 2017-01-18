@@ -103,11 +103,12 @@ void main() {
 	}
 #else
 	float alpha = 0.0;
-	ivec2 xy = ivec2(-3, -3);
-	for (xy.x = -3; xy.x <= 3; xy.x++)
-		for (xy.y = -3; xy.y <= 3; xy.y++)
+	int blurRadius = 3;
+	ivec2 xy = ivec2(-blurRadius, -blurRadius);
+	for (xy.x = -blurRadius; xy.x <= blurRadius; xy.x++)
+		for (xy.y = -blurRadius; xy.y <= blurRadius; xy.y++)
 			alpha += texture(tex_shadow_proj, ex_UV.st + vec2(2.0 / 1280.0, 2.0 / 720.0) * xy).a;
-	alpha /= 49.0;
+	alpha /= pow(float(2*blurRadius + 1), 2.0);
 	fragColor.rgb = ao * alpha * texture(tex_color, ex_UV.st).rgb * 1.2;
 
 	if (ex_UV.s <= 1.0/6.0 && ex_UV.t <= 1.0/6.0) {
