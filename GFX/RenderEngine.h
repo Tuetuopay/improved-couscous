@@ -86,6 +86,10 @@ private:
 	int _winW, _winH;
 	float _scale; // HIDPI scaling factor
 
+	// History of game frames to average FPS over one second
+	double _dts[60];
+	int _dtsNo;
+
 	inline void _makeMVP() { _matMVP = _matProj * _matView * _matModel; }
 
 	Game::GameEngine *_gameEngine;

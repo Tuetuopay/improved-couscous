@@ -57,7 +57,8 @@ RenderEngine::RenderEngine()
    _gameEngine(nullptr), _gameData(nullptr),
    _camera(glm::vec3(2.5f, 5.f, 7.5f), glm::vec3(0), glm::vec3(0, 1, 0)),
    _light(glm::vec3(7.5f, 7.5f, 7.5f), glm::vec3(0.0, -0.0, 0.0), glm::vec3(0, 1, 0), false),
-   _fpsController(&_camera)
+   _fpsController(&_camera),
+   _dts{0}, _dtsNo(0)
    {}
 
 int RenderEngine::setup() {
@@ -214,7 +215,13 @@ void RenderEngine::render() {
 	lightAngle += _gameData->dt;
 	_light.setPos(glm::rotate(glm::vec3(20, 20, 20), lightAngle, glm::vec3(0.0, 1.0, 0.0)));
 
-	_labelFPS->setText("FPS = " + std::to_string(1.f / _gameData->dt) + "\nx,y,z = TODO");
+	// Update FPS
+	_dts[_dtsNo++] = _gameData->dt;
+	_dtsNo %= 60;
+	double fps = 0;
+	for (int i = 0; i < 60; i++) fps += _dts[i];
+	fps /= 60.0;
+	_labelFPS->setText("FPS = " + std::to_string(1.f / fps) + "\nx,y,z = TODO");
 
 	glEnable(GL_DEPTH_TEST);
 
