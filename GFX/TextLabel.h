@@ -61,7 +61,7 @@ public:
 	inline const glm::vec3& pos() const { return _pos; }
 	inline const glm::vec3& rot() const { return _rot; }
 	inline const float& scale() const { return _scale; }
-	inline void setText(const std::string &text) { _text = text; }
+	inline void setText(const std::string &text) { _text = text; makeVBO(); }
 	inline void setPos(const glm::vec3 &pos) { _pos = pos; }
 	inline void setRot(const glm::vec3 &rot) { _rot = rot; }
 	inline void setScale(const float &scale) { _scale = scale; }
