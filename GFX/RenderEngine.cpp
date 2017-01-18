@@ -57,7 +57,8 @@ RenderEngine::RenderEngine()
    _gameEngine(nullptr), _gameData(nullptr),
    _camera(glm::vec3(2.5f, 5.f, 7.5f), glm::vec3(0), glm::vec3(0, 1, 0)),
    _light(glm::vec3(7.5f, 7.5f, 7.5f), glm::vec3(0.0, -0.0, 0.0), glm::vec3(0, 1, 0), false),
-   _fpsController(&_camera)
+   _fpsController(&_camera),
+   _dts{0}, _dtsNo(0)
    {}
 
 int RenderEngine::setup() {
@@ -111,6 +112,13 @@ int RenderEngine::setup() {
 	// _matView = glm::lookAt(glm::vec3(2.5f, 5.f, 7.5f), glm::vec3(0), glm::vec3(0, 1, 0));
 	_matModel = glm::mat4(1.f);
 	_makeMVP();
+	_matHUD = glm::translate(
+		glm::scale(
+			glm::translate(
+				glm::mat4(1.f), glm::vec3(-1.f, 1.f, 0.f)
+			), glm::vec3(32.f / 1280.f, 32.f / 720.f, 1.f)
+		), glm::vec3(0.f, -1.f, 0.f)
+	);
 
 	// Texture
 	GLuint texGrass = GL::textureFromTGA("textures/grass.tga");
@@ -184,11 +192,18 @@ int RenderEngine::setup() {
 	_matModel = glm::scale(glm::vec3(0.5, 0.5, 0.5)) * glm::translate(glm::vec3(-0.5, 0, -0.5));
 
 	// Create the text renderer
-	_textRenderer = new TextRenderer();
+	_textRenderer3D = new TextRenderer();
+	_textRenderer2D = new TextRenderer();
 
 	// Test
-	std::shared_ptr<TextLabel> label(new TextLabel("This is a test!\nHello World", glm::vec3(0.f, 4.f, 0.f)));
-	_textRenderer->addLabel(label);
+	std::shared_ptr<TextLabel> label(
+		new TextLabel("This is a test!\nHello World", glm::vec3(0.f, 4.f, 0.f))
+	);
+	_textRenderer3D->addLabel(label);
+	_labelFPS = std::shared_ptr<TextLabel>(
+		new TextLabel("FPS = \nx,y,z = ", glm::vec3(0.f, 0.f, 0.f))
+	);
+	_textRenderer2D->addLabel(_labelFPS);
 
 	return 0;
 }
@@ -199,6 +214,18 @@ void RenderEngine::render() {
 
 	lightAngle += _gameData->dt;
 	_light.setPos(glm::rotate(glm::vec3(20, 20, 20), lightAngle, glm::vec3(0.0, 1.0, 0.0)));
+
+	// Update FPS
+	_dts[_dtsNo++] = _gameData->dt;
+	_dtsNo %= 60;
+	double fps = 0;
+	for (int i = 0; i < 60; i++) fps += _dts[i];
+	fps /= 60.0;
+	_labelFPS->setText(
+		"FPS = " + std::to_string(1.f / fps) + "\nx,y,z = (" +
+		std::to_string(_camera.pos().x) + ", " + std::to_string(_camera.pos().y) +
+		", " + std::to_string(_camera.pos().z) + ")"
+	);
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -242,6 +269,10 @@ void RenderEngine::render() {
 	_fboShadow->bindRender(3);
 	_square->render();
 
+	glDisable(GL_CULL_FACE);
+	_textRenderer2D->render(_matHUD);
+	glEnable(GL_CULL_FACE);
+
 	glfwSwapBuffers(_window);
 	glfwPollEvents();
 }
@@ -261,7 +292,7 @@ void RenderEngine::render3D(GL::Shader *shader) {
 	_cube->render();
 
 	glDisable(GL_CULL_FACE);
-	_textRenderer->render(_matProj * _matView);
+	_textRenderer3D->render(_matProj * _matView);
 	glEnable(GL_CULL_FACE);
 
 #if 1==2

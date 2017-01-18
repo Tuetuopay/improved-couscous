@@ -22,6 +22,7 @@
  **/
 
 #include <list>
+#include <vector>
 
 #include "GFX/TextLabel.h"
 #include "GFX/GL/Texture.h"
@@ -53,7 +54,10 @@ void TextLabel::makeVBO() {
 
 	// Allocate a BIG buffer for all vectors
 	// xy will be the letter position, while zw will be the texture uv displacement
-	glm::vec4 *vecs = new glm::vec4[_text.size()];
+	if (_lastSize < _text.size()) {
+		_vecs.reserve(_text.size());
+		_lastSize = _text.size();
+	}
 
 	// Fill it
 	glm::vec2 charPos(0.f);
@@ -68,7 +72,7 @@ void TextLabel::makeVBO() {
 			charPos.x = float(int(charPos.x + 4) % 4);
 			break;
 		default:
-			vecs[visibleCount] = glm::vec4(charPos.x, charPos.y, _text[i] % 16, 15.f - _text[i] / 16);
+			_vecs[visibleCount] = glm::vec4(charPos.x, charPos.y, _text[i] % 16, 15.f - _text[i] / 16);
 			charPos.x += _fontDescriptor[(unsigned char)_text[i]].x;
 			visibleCount++;
 			break;
@@ -76,10 +80,7 @@ void TextLabel::makeVBO() {
 	}
 
 	// Call the "raw array" method
-	_vbo->setInstanced(vecs, visibleCount);
-
-	// Release the buffer
-	delete[] vecs;
+	_vbo->setInstanced(_vecs.data(), visibleCount);
 }
 
 }

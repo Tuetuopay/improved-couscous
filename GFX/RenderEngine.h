@@ -34,6 +34,7 @@ typedef struct GLFWwindow GLFWwindow;
 #include "GFX/GL/FBO.h"
 #include "GFX/GL/Shader.h"
 #include "GFX/TextRenderer.h"
+#include "GFX/TextLabel.h"
 
 #include "Game/GameData.h"
 
@@ -77,7 +78,7 @@ private:
 
 	// Internal data
 	GLFWwindow *_window;
-	glm::mat4 _matProj, _matOrtho, _matView, _matModel, _matMVP;
+	glm::mat4 _matProj, _matOrtho, _matView, _matModel, _matMVP, _matHUD;
 	GFX::GL::VBO *_cube, *_square;
 	GFX::GL::Shader *_shaderShadow, *_shaderSSAO, *_shaderDepth, *_shaderColor;
 	GFX::GL::FBO *_fbo, *_fboLight, *_fboShadow;
@@ -85,11 +86,16 @@ private:
 	int _winW, _winH;
 	float _scale; // HIDPI scaling factor
 
+	// History of game frames to average FPS over one second
+	double _dts[60];
+	int _dtsNo;
+
 	inline void _makeMVP() { _matMVP = _matProj * _matView * _matModel; }
 
 	Game::GameEngine *_gameEngine;
 	Game::GameData   *_gameData;
-	TextRenderer *_textRenderer;
+	TextRenderer *_textRenderer3D, *_textRenderer2D;
+	std::shared_ptr<TextLabel> _labelFPS;
 
 	Game::Entities::Camera _camera, _light;
 	Input::Controller::FPSController _fpsController;
