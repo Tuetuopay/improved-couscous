@@ -181,10 +181,10 @@ void VBO::setBuffer(const float *buffer, const int elementSize) {
 	setBuffer((void*)buffer, GL_FLOAT, elementSize);
 }
 void VBO::setBuffer(const int *buffer, const int elementSize) {
-	setBuffer((void*)buffer, GL_INT)
+	setBuffer((void*)buffer, GL_INT, elementSize);
 }
 
-void VBO::setBuffer(const void *buffer, const GLenum type, const int elementSize)
+void VBO::setBuffer(const void *buffer, const GLenum type, const int elementSize) {}
 
 void VBO::setVertices(const float *vertices, const int nVertices, const int nVertData) {
 	_nVertex = nVertices;
@@ -194,7 +194,7 @@ void VBO::setVertices(const float *vertices, const int nVertices, const int nVer
 	glBindBuffer (GL_ARRAY_BUFFER, _bufVertex);
 	glBufferData (GL_ARRAY_BUFFER, sizeof(float) * _nVertex * _nVertData, vertices,
 	              GL_DYNAMIC_DRAW);
-	glVertexAttribPointer(0, vertexSize, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(0, _nVertData, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(0);
 }
 void VBO::setTextures(const float *textures, const int nTextures, const int nTexData) {
@@ -202,9 +202,9 @@ void VBO::setTextures(const float *textures, const int nTextures, const int nTex
 
 	if (!_bufTexture) glGenBuffers (1, &_bufTexture);
 	glBindBuffer (GL_ARRAY_BUFFER, _bufTexture);
-	glBufferData (GL_ARRAY_BUFFER, sizeof(float) * _nVertex * _nTexData, texture,
+	glBufferData (GL_ARRAY_BUFFER, sizeof(float) * _nVertex * _nTexData, textures,
 	              GL_DYNAMIC_DRAW);
-	glVertexAttribPointer(1, textureSize, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(1, _nTexData, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(1);
 	_isTexEnabled = true;
 }
@@ -215,13 +215,27 @@ void VBO::setColors(const float *colors, const int nColors, const int nColData) 
 	glBindBuffer (GL_ARRAY_BUFFER, _bufColors);
 	glBufferData (GL_ARRAY_BUFFER, sizeof(float) * _nVertex * _nColorData, colors,
 	              GL_DYNAMIC_DRAW);
-	glVertexAttribPointer(2, colorSize, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(2, _nColorData, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(2);
 	_isColEnabled = true;
 }
 void VBO::setNormals(const float *normals, const int nNormals) {
+	if (!_bufNormals) glGenBuffers(1, &_bufNormals);
+	glBindBuffer (GL_ARRAY_BUFFER, _bufNormals);
+	glBufferData (GL_ARRAY_BUFFER, sizeof(float) * _nVertex * 3, normals, GL_DYNAMIC_DRAW);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(3);
+	_isNormEnabled = true;
 }
 void VBO::setIndexes(const int *indexes, const int nIndexes) {
+	_nIndexes = nIndexes;
+
+	if (!_bufIndexes) glGenBuffers(1, &_bufIndexes);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _bufIndexes);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * _nIndexes, indexes,
+	             GL_DYNAMIC_DRAW);
+	_isIndxEnabled = true;
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void VBO::_checkData() {
