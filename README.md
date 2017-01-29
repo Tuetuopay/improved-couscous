@@ -1,7 +1,7 @@
 # C++Ube -- name subject to change
 
 This is my own shot at a simple yet efficient game engine. Right now, it is more
-of a OpenGL playground than a real engine, but heh ¯\_(ツ)_/¯
+of a OpenGL playground than a real engine, but heh ¯\\_(ツ)_/¯
 
 # Compiling
 
