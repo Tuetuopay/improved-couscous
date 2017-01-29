@@ -53,6 +53,12 @@ public:
 	template<typename T>
 	void setInstanced(const T* data, const size_t &count);
 
+	void setVertices(const float *vertices, const int nVertices, const int nVertData = 3);
+	void setTextures(const float *textures, const int nTextures, const int nTexData = 2);
+	void setColors(const float *colors, const int nColors, const int nColData = 4);
+	void setNormals(const float *normals, const int nNormals);
+	void setIndexes(const int *indexes, const int nIndexes);
+
 private:
 	GLuint _bufVertex, _bufTexture, _bufColors, _bufNormals,    /* VBOs */
 	       _bufIndexes, _texture,                               /* Texture */

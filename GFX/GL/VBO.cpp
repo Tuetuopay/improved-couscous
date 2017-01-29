@@ -177,6 +177,53 @@ template void VBO::setInstanced<glm::vec2>(const glm::vec2* data, const size_t &
 template void VBO::setInstanced<float>(const float* data, const size_t &count);
 template void VBO::setInstanced<int>(const int* data, const size_t &count);
 
+void VBO::setBuffer(const float *buffer, const int elementSize) {
+	setBuffer((void*)buffer, GL_FLOAT, elementSize);
+}
+void VBO::setBuffer(const int *buffer, const int elementSize) {
+	setBuffer((void*)buffer, GL_INT)
+}
+
+void VBO::setBuffer(const void *buffer, const GLenum type, const int elementSize)
+
+void VBO::setVertices(const float *vertices, const int nVertices, const int nVertData) {
+	_nVertex = nVertices;
+	_nVertData = nVertData;
+
+	if (!_bufVertex) glGenBuffers (1, &_bufVertex);
+	glBindBuffer (GL_ARRAY_BUFFER, _bufVertex);
+	glBufferData (GL_ARRAY_BUFFER, sizeof(float) * _nVertex * _nVertData, vertices,
+	              GL_DYNAMIC_DRAW);
+	glVertexAttribPointer(0, vertexSize, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(0);
+}
+void VBO::setTextures(const float *textures, const int nTextures, const int nTexData) {
+	_nTexData = nTexData;
+
+	if (!_bufTexture) glGenBuffers (1, &_bufTexture);
+	glBindBuffer (GL_ARRAY_BUFFER, _bufTexture);
+	glBufferData (GL_ARRAY_BUFFER, sizeof(float) * _nVertex * _nTexData, texture,
+	              GL_DYNAMIC_DRAW);
+	glVertexAttribPointer(1, textureSize, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(1);
+	_isTexEnabled = true;
+}
+void VBO::setColors(const float *colors, const int nColors, const int nColData) {
+	_nColorData = nColData;
+
+	if (!_bufColors) glGenBuffers (1, &_bufColors);
+	glBindBuffer (GL_ARRAY_BUFFER, _bufColors);
+	glBufferData (GL_ARRAY_BUFFER, sizeof(float) * _nVertex * _nColorData, colors,
+	              GL_DYNAMIC_DRAW);
+	glVertexAttribPointer(2, colorSize, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(2);
+	_isColEnabled = true;
+}
+void VBO::setNormals(const float *normals, const int nNormals) {
+}
+void VBO::setIndexes(const int *indexes, const int nIndexes) {
+}
+
 void VBO::_checkData() {
 	/* Vertex pointer: 2, 3, 4 */
 	if (_nVertData < 2)  _nVertData = 2;
