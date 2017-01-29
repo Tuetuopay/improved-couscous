@@ -208,6 +208,17 @@ int RenderEngine::setup() {
 	return 0;
 }
 
+inline std::string toString(const glm::vec2 &v) {
+	return std::to_string(v.x) + ", " + std::to_string(v.y);
+}
+inline std::string toString(const glm::vec3 &v) {
+	return std::to_string(v.x) + ", " + std::to_string(v.y) + ", "
+	       + std::to_string(v.z);
+}
+inline std::string toString(const glm::vec4 &v) {
+	return std::to_string(v.x) + ", " + std::to_string(v.y) + ", "
+	       + std::to_string(v.z) + ", " + std::to_string(v.w);
+}
 void RenderEngine::render() {
 	// Light
 	static float lightAngle = 0.f;
@@ -222,9 +233,10 @@ void RenderEngine::render() {
 	for (int i = 0; i < 60; i++) fps += _dts[i];
 	fps /= 60.0;
 	_labelFPS->setText(
-		"FPS = " + std::to_string(1.f / fps) + "\nx,y,z = (" +
-		std::to_string(_camera.pos().x) + ", " + std::to_string(_camera.pos().y) +
-		", " + std::to_string(_camera.pos().z) + ")"
+		"FPS = " + std::to_string(1.f / fps) + "\n"
+		"x, y, z \t\t\t(" + toString(_camera.pos()) + ")\n"
+		"dx, dy, dz \t\t(" + toString(_camera.vel()) + ")\n"
+		"ddx, ddy, ddz \t(" + toString(_camera.acc()) + ")\n"
 	);
 
 	glEnable(GL_DEPTH_TEST);

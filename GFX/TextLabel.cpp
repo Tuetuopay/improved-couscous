@@ -69,7 +69,7 @@ void TextLabel::makeVBO() {
 			charPos.y -= 1.f;
 			break;
 		case '\t':
-			charPos.x = float(int(charPos.x + 4) % 4);
+			charPos.x = float(int(charPos.x) + 4) - float(int(charPos.x) % 4);
 			break;
 		default:
 			_vecs[visibleCount] = glm::vec4(charPos.x, charPos.y, _text[i] % 16, 15.f - _text[i] / 16);
