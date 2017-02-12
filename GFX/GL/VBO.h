@@ -61,14 +61,13 @@ public:
 	);
 
 	void setVertices(const float *vertices, const int nVertices, const int nVertData = 3);
-	void setTextures(const float *textures, const int nTextures, const int nTexData = 2);
-	void setColors(const float *colors, const int nColors, const int nColData = 4);
-	void setNormals(const float *normals, const int nNormals);
-	void setIndexes(const int *indexes, const int nIndexes);
+	void setTextures(const float *textures, const int nTexData = 2);
+	void setColors(const float *colors, const int nColData = 4);
+	void setNormals(const float *normals);
+	void setIndexes(const GLuint *indexes, const int nIndexes);
 
 private:
-	GLuint _bufVertex, _bufTexture, _bufColors, _bufNormals,    /* VBOs */
-	       _bufIndexes, _texture,                               /* Texture */
+	GLuint _bufIndexes, _texture,                               /* Texture */
 	       _vao, _bufInstance;
 	std::map<int, GLuint> _buffers;
 	int _nVertex, _nIndexes,                                    /* Amount of vertices to render */
