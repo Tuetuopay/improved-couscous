@@ -28,6 +28,7 @@
 
 #include <iostream>
 #include <list>
+#include <map>
 #include <glm/glm.hpp>
 
 #ifndef BUFFER_OFFSET
@@ -69,6 +70,7 @@ private:
 	GLuint _bufVertex, _bufTexture, _bufColors, _bufNormals,    /* VBOs */
 	       _bufIndexes, _texture,                               /* Texture */
 	       _vao, _bufInstance;
+	std::map<int, GLuint> _buffers;
 	int _nVertex, _nIndexes,                                    /* Amount of vertices to render */
 		/* Amount of info per vertex (ex: amount of coordinates for texture) */
 	    _nVertData, _nTexData, _nColorData,

@@ -186,7 +186,25 @@ void VBO::setBuffer(const int attribNo, const int *buffer, const int elementSize
 
 void VBO::setBuffer(
 	const int attribNo, const void *buffer, const GLenum type, const int elementSize
-) {}
+) {
+	auto bufPos = _buffers.find(attribNo);
+	GLuint buf = 0;
+	if (bufPos != _buffers.end())
+		buf = bufPos->second;
+	else {
+		glGenBuffers(1, &buf);
+		_buffers[attribNo] = buf;
+	}
+
+	glBindBuffer(GL_ARRAY_BUFFER, buf);
+	glBufferData(
+		GL_ARRAY_BUFFER,
+		(type == GL_FLOAT ? sizeof(float) : sizeof(GLuint)) * _nVertex * elementSize,
+		buffer, GL_DYNAMIC_DRAW
+	);
+	glVertexAttribPointer(attribNo, elementSize, type, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(attribNo);
+}
 
 void VBO::setVertices(const float *vertices, const int nVertices, const int nVertData) {
 	_nVertex = nVertices;
