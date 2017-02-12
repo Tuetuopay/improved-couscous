@@ -177,14 +177,16 @@ template void VBO::setInstanced<glm::vec2>(const glm::vec2* data, const size_t &
 template void VBO::setInstanced<float>(const float* data, const size_t &count);
 template void VBO::setInstanced<int>(const int* data, const size_t &count);
 
-void VBO::setBuffer(const float *buffer, const int elementSize) {
-	setBuffer((void*)buffer, GL_FLOAT, elementSize);
+void VBO::setBuffer(const int attribNo, const float *buffer, const int elementSize) {
+	setBuffer(attribNo, (void*)buffer, GL_FLOAT, elementSize);
 }
-void VBO::setBuffer(const int *buffer, const int elementSize) {
-	setBuffer((void*)buffer, GL_INT, elementSize);
+void VBO::setBuffer(const int attribNo, const int *buffer, const int elementSize) {
+	setBuffer(attribNo, (void*)buffer, GL_INT, elementSize);
 }
 
-void VBO::setBuffer(const void *buffer, const GLenum type, const int elementSize) {}
+void VBO::setBuffer(
+	const int attribNo, const void *buffer, const GLenum type, const int elementSize
+) {}
 
 void VBO::setVertices(const float *vertices, const int nVertices, const int nVertData) {
 	_nVertex = nVertices;

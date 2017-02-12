@@ -53,9 +53,11 @@ public:
 	template<typename T>
 	void setInstanced(const T* data, const size_t &count);
 
-	void setBuffer(const float *buffer, const int elementSize);
-	void setBuffer(const int *buffer, const int elementSize);
-	void setBuffer(const void *buffer, const GLenum type, const int elementSize);
+	void setBuffer(const int attribNo, const float *buffer, const int elementSize);
+	void setBuffer(const int attribNo, const int *buffer, const int elementSize);
+	void setBuffer(
+		const int attribNo, const void *buffer, const GLenum type, const int elementSize
+	);
 
 	void setVertices(const float *vertices, const int nVertices, const int nVertData = 3);
 	void setTextures(const float *textures, const int nTextures, const int nTexData = 2);
