@@ -212,19 +212,19 @@ void VBO::setVertices(const float *vertices, const int nVertices, const int nVer
 
 	setBuffer(0, vertices, _nVertData);
 }
-void VBO::setTextures(const float *textures, const int nTextures, const int nTexData) {
+void VBO::setTextures(const float *textures, const int nTexData) {
 	_nTexData = nTexData;
 
 	setBuffer(1, textures, _nTexData);
 	_isTexEnabled = true;
 }
-void VBO::setColors(const float *colors, const int nColors, const int nColData) {
+void VBO::setColors(const float *colors, const int nColData) {
 	_nColorData = nColData;
 
 	setBuffer(2, colors, _nColorData);
 	_isColEnabled = true;
 }
-void VBO::setNormals(const float *normals, const int nNormals) {
+void VBO::setNormals(const float *normals) {
 	setBuffer(3, normals, 3);
 }
 void VBO::setIndexes(const int *indexes, const int nIndexes) {
