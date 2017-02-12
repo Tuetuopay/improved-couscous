@@ -13,7 +13,8 @@ SRCS = main.cpp \
 	   Input/Controller/FPSController.cpp \
 	   Models/Model.cpp
 
-CXXFLAGS = -Wall -O2 -g -std=c++14 -iquote. -MMD -MP
+GCC_COLOR_MODE = auto
+CXXFLAGS = -Wall -O2 -g -std=c++14 -iquote. -MMD -MP -fdiagnostics-color=$(GCC_COLOR_MODE)
 
 LDLIBS =
 LDFLAGS = -flto
