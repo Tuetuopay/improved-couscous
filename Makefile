@@ -13,11 +13,16 @@ SRCS = main.cpp \
 	   Input/Controller/FPSController.cpp \
 	   Models/Model.cpp
 
+ASSIMP_PATH = Thirdparty/assimp
+ASSIMP_LIB_PATH = $(ASSIMP_PATH)/lib
+
 GCC_COLOR_MODE = auto
-CXXFLAGS = -Wall -O2 -g -std=c++14 -iquote. -MMD -MP -fdiagnostics-color=$(GCC_COLOR_MODE)
+CXXFLAGS = -Wall -O2 -g -std=c++14 -iquote. -MMD -MP \
+           -fdiagnostics-color=$(GCC_COLOR_MODE) $(ASSIMP_PATH)/include
 
 LDLIBS =
 LDFLAGS = -flto
+
 
 ifeq ($(OS),Windows_NT)
 	CC = i686-w64-mingw32-c++
@@ -26,6 +31,7 @@ ifeq ($(OS),Windows_NT)
 
 	LDLIBS += -lglew32 -lglfw3 -lopengl32 -lgdi32
 	LDFLAGS += -static-libstdc++ -static-libgcc
+	ASSIMP_LIB += $(ASSIMP_LIB_PATH)/libassimp.lib
 
 	CXXFLAGS += -DOS_WIN32
 else
@@ -36,10 +42,12 @@ else
 	ifeq ($(UNAME),Linux)
 		LDLIBS += -lglfw -lGLEW -lm -lGL
 		CXXFLAGS += -DOS_LINUX
+		ASSIMP_LIB += $(ASSIMP_LIB_PATH)/libassimp.so
 	endif
 	ifeq ($(UNAME),Darwin)
 		LDLIBS += -framework OpenGL -lglfw3 -lglew
 		CXXFLAGS += -DOS_OSX
+		ASSIMP_LIB += $(ASSIMP_LIB_PATH)/libassimp.dylib
 	endif
 endif
 
@@ -53,8 +61,18 @@ DEPS = $(SRCS:.cpp=.d)
 .PHONY: all run clean
 
 all: $(EXE)
-$(EXE): $(OBJS)
+$(EXE): $(OBJS) $(ASSIMP_LIB)
 -include $(DEPS)
+
+ASSIMP_JOBS = 8
+
+Thirdparty/assimp:
+	git submodule update --init --recursive
+
+$(ASSIMP_LIB): Thirdparty/assimp
+	cd Thirdparty/assimp && \
+		cmake ASSIMP_BUILD_TESTS=OFF BUILD_SHARED_LIBS=OFF . && \
+		make -j$(ASSIMP_JOBS)
 
 run: $(EXE)
 	./$(EXE)
