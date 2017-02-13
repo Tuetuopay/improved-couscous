@@ -30,11 +30,17 @@ namespace GFX { namespace GL {
 VBO::VBO (const float *vertices, const float *texture, const float *colors, const float *normals,
 		  int nVertices, const GLuint *indexes, int nIndexes, GLuint gltexture, GLenum drawMode,
 		  int vertexSize, int colorSize, int textureSize)
-	: _texture(gltexture), _bufInstance(0), _nVertex(nVertices), _nIndexes(nIndexes), _nVertData(vertexSize),
-	  _nTexData(textureSize), _nColorData(colorSize), _mode(drawMode),
-	  _instanceData(nullptr)
+	: _texture(gltexture), _bufInstance(0), _nVertex(nVertices), _nIndexes(nIndexes),
+	  _mode(drawMode), _instanceData(nullptr)
 {
-	_checkData();
+	// Check that element sizes are correct
+	if (vertexSize < 2) vertexSize = 2;
+	if (vertexSize > 4) vertexSize = 4;
+	if (textureSize < 1) textureSize = 1;
+	if (textureSize > 4) textureSize = 4;
+	if (colorSize < 3) colorSize = 3;
+	if (colorSize > 4) colorSize = 4;
+
 	_isTexEnabled = _isColEnabled = _isNormEnabled = _isIndxEnabled = false;
 
 	glGenVertexArrays(1, &_vao);
@@ -180,20 +186,14 @@ void VBO::setBuffer(
 
 void VBO::setVertices(const float *vertices, const int nVertices, const int nVertData) {
 	_nVertex = nVertices;
-	_nVertData = nVertData;
-
-	setBuffer(0, vertices, _nVertData);
+	setBuffer(0, vertices, nVertData);
 }
 void VBO::setTextures(const float *textures, const int nTexData) {
-	_nTexData = nTexData;
-
-	setBuffer(1, textures, _nTexData);
+	setBuffer(1, textures, nTexData);
 	_isTexEnabled = true;
 }
 void VBO::setColors(const float *colors, const int nColData) {
-	_nColorData = nColData;
-
-	setBuffer(2, colors, _nColorData);
+	setBuffer(2, colors, nColData);
 	_isColEnabled = true;
 }
 void VBO::setNormals(const float *normals) {
@@ -202,25 +202,12 @@ void VBO::setNormals(const float *normals) {
 void VBO::setIndexes(const GLuint *indexes, const int nIndexes) {
 	_nIndexes = nIndexes;
 
-
 	if (!_bufIndexes) glGenBuffers(1, &_bufIndexes);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _bufIndexes);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * _nIndexes, indexes,
 	             GL_DYNAMIC_DRAW);
 	_isIndxEnabled = true;
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-}
-
-void VBO::_checkData() {
-	/* Vertex pointer: 2, 3, 4 */
-	if (_nVertData < 2)  _nVertData = 2;
-	if (_nVertData > 4)  _nVertData = 4;
-	/* Texture pointer: 1, 2, 3, 4 */
-	if (_nTexData < 1)   _nTexData = 1;
-	if (_nTexData > 4)   _nTexData = 4;
-	/* Color pointer: 3, 4 */
-	if (_nColorData < 3) _nColorData = 3;
-	if (_nColorData > 4) _nColorData = 4;
 }
 
 }}

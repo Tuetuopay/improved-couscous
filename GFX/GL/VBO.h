@@ -72,7 +72,6 @@ private:
 	std::map<int, GLuint> _buffers;
 	int _nVertex, _nIndexes,                                    /* Amount of vertices to render */
 		/* Amount of info per vertex (ex: amount of coordinates for texture) */
-	    _nVertData, _nTexData, _nColorData,
 		_nInstance;
 	bool _isTexEnabled, _isColEnabled, _isNormEnabled, _isIndxEnabled;;
 	GLenum _mode;
