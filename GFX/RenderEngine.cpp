@@ -54,11 +54,11 @@ bool RenderEngine::_isClicking = false;
 
 RenderEngine::RenderEngine()
  : _winW(1280), _winH(720),
+   _dts{0}, _dtsNo(0),
    _gameEngine(nullptr), _gameData(nullptr),
    _camera(glm::vec3(2.5f, 5.f, 7.5f), glm::vec3(0), glm::vec3(0, 1, 0)),
    _light(glm::vec3(7.5f, 7.5f, 7.5f), glm::vec3(0.0, -0.0, 0.0), glm::vec3(0, 1, 0), false),
-   _fpsController(&_camera),
-   _dts{0}, _dtsNo(0)
+   _fpsController(&_camera)
    {}
 
 int RenderEngine::setup() {
