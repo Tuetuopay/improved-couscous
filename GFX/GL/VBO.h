@@ -67,13 +67,12 @@ public:
 	void setIndexes(const GLuint *indexes, const int nIndexes);
 
 private:
-	GLuint _bufIndexes, _texture,                               /* Texture */
+	GLuint _bufIndexes, _texture,       /* Texture */
 	       _vao, _bufInstance;
 	std::map<int, GLuint> _buffers;
-	int _nVertex, _nIndexes,                                    /* Amount of vertices to render */
-		/* Amount of info per vertex (ex: amount of coordinates for texture) */
+	int _nVertex, _nIndexes,            /* Amount of vertices to render */
 		_nInstance;
-	bool _isTexEnabled, _isColEnabled, _isNormEnabled, _isIndxEnabled;;
+	bool _isIndxEnabled;
 	GLenum _mode;
 	GLubyte *_instanceData;
 

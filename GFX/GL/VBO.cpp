@@ -41,7 +41,7 @@ VBO::VBO (const float *vertices, const float *texture, const float *colors, cons
 	if (colorSize < 3) colorSize = 3;
 	if (colorSize > 4) colorSize = 4;
 
-	_isTexEnabled = _isColEnabled = _isNormEnabled = _isIndxEnabled = false;
+	_isIndxEnabled = false;
 
 	glGenVertexArrays(1, &_vao);
 	glBindVertexArray(_vao);
@@ -190,11 +190,9 @@ void VBO::setVertices(const float *vertices, const int nVertices, const int nVer
 }
 void VBO::setTextures(const float *textures, const int nTexData) {
 	setBuffer(1, textures, nTexData);
-	_isTexEnabled = true;
 }
 void VBO::setColors(const float *colors, const int nColData) {
 	setBuffer(2, colors, nColData);
-	_isColEnabled = true;
 }
 void VBO::setNormals(const float *normals) {
 	setBuffer(3, normals, 3);
