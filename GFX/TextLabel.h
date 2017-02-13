@@ -87,7 +87,7 @@ private:
 	// VBO creator
 	void makeVBO();
 	std::vector<glm::vec4> _vecs;
-	int _lastSize;
+	unsigned int _lastSize;
 };
 
 }
