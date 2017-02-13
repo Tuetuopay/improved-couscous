@@ -18,7 +18,7 @@ ASSIMP_LIB_PATH = $(ASSIMP_PATH)/lib
 
 GCC_COLOR_MODE = auto
 CXXFLAGS = -Wall -O2 -g -std=c++14 -iquote. -MMD -MP \
-           -fdiagnostics-color=$(GCC_COLOR_MODE) $(ASSIMP_PATH)/include
+           -fdiagnostics-color=$(GCC_COLOR_MODE) -isystem$(ASSIMP_PATH)/include
 
 LDLIBS =
 LDFLAGS = -flto
