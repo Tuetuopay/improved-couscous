@@ -23,6 +23,8 @@
 
 #include "Models/Model.h"
 
+#include <vector>
+
 // Use AssImp
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -46,6 +48,37 @@ Model::Model(const std::string &filename) : _vbo(nullptr) {
 	);
 
 	if (scene) {
+		// For now, we'll choose the first mesh in the scene
+		const aiMesh *mesh = scene->mMeshes[0];
+
+		// First we need to build a proper index buffer
+		std::vector<GLuint> idxBuffer;
+		idxBuffer.reserve(mesh->mNumFaces * 3);
+
+		for (int i = 0; i < mesh->mNumFaces; i++) {
+			const aiFace &face = mesh->mFaces[i];
+			idxBuffer[(i * 3) + 0] = face.mIndices[0];
+			idxBuffer[(i * 3) + 1] = face.mIndices[1];
+			idxBuffer[(i * 3) + 2] = face.mIndices[2];
+		}
+
+		// Give null everywhere since we'll manually set buffers one by one
+		_vbo = std::shared_ptr<GFX::GL::VBO>(new GFX::GL::VBO(
+			nullptr, nullptr, nullptr, nullptr, 0, nullptr, 0
+		));
+
+		_vbo->setVertices(&mesh->mVertices[0].x, mesh->mNumVertices);
+		if (mesh->HasTextureCoords(0))
+			_vbo->setTextures(
+				&mesh->mTextureCoords[0][0].x,
+				mesh->mNumUVComponents[0], 3 - mesh->mNumUVComponents[0]
+			);
+		if (mesh->HasNormals())
+			_vbo->setNormals(&mesh->mNormals[0].x);
+		if (mesh->HasVertexColors(0))
+			_vbo->setColors(&mesh->mColors[0][0].r);
+
+		_vbo->setIndexes(&idxBuffer[0], idxBuffer.size());
 	}
 	else
 		std::cerr << "Failed to load mesh '" << filename << "' : " <<
