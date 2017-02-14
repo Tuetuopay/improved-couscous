@@ -56,7 +56,6 @@ VBO::VBO (const float *vertices, const float *texture, const float *colors, cons
 		setNormals(normals);
 	if (indexes)
 		setIndexes(indexes, nIndexes);
-	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }
 
 VBO::~VBO () {
