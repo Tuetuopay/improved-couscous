@@ -132,13 +132,15 @@ int RenderEngine::setup() {
 	for (int i = 0; i < 28; i++) tex[i] /= 4.f;
 	_cube = new GL::VBO(vert, tex, nullptr, nullptr, 14, idx, 12 * 3, texGrass);
 
+	_suzanne = new Models::Model("models/suzanne.obj");
+
 	// Generate instances
 	std::list<glm::mat4*> matInstance;
 	for (int x = -COUNT; x <= COUNT; x++)
 		for (int z = -COUNT; z <= COUNT; z++) {
 			int y = sin((x + z) / 2.0) * 2;
 			matInstance.push_back(new glm::mat4(
-				glm::translate(glm::vec3(x, y, z)) * glm::translate(glm::vec3(-0.5, -0.5, -0.5))
+				glm::translate(glm::vec3(x, y, z)) * glm::translate(glm::vec3(-0.5, -3.5, -0.5))
 			));
 		}
 	_cube->setInstanced(matInstance);
@@ -302,6 +304,8 @@ void RenderEngine::render3D(GL::Shader *shader) {
 	_matMVP = biasMatrix * _matOrtho * _light.matrix();
 	shader->pushUniform("lightMVP", 1, GL_FALSE, &_matMVP[0][0], 4);
 	_cube->render();
+
+	_suzanne->render();
 
 	glDisable(GL_CULL_FACE);
 	_textRenderer3D->render(_matProj * _matView);
