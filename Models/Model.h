@@ -25,19 +25,16 @@
 #define _MODELS_MODEL_H
 
 #include <memory>
+#include <string>
 #include "GFX/GL/VBO.h"
 
 namespace models {
 
 class Model {
 	/**
-	 * Empty constructor, should not be used.
+	 * Builds a new model from a file
 	 */
-	Model();
-
-	/**
-	 * Constructs a model from some vertice data.
-	 * @param 
+	Model(const std::string &filename);
 
 public:
 	~Model();
@@ -45,7 +42,7 @@ public:
 protected:
 	// Actual GL model
 	std::shared_ptr<GFX::GL::VBO> _vbo;
-}
+};
 
 }
 
