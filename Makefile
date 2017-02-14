@@ -1,23 +1,24 @@
-EXE = main
-SRCS = main.cpp \
-       GFX/GL/Shader.cpp \
-       GFX/GL/FBO.cpp \
-       GFX/GL/VBO.cpp \
-	   GFX/GL/Texture.cpp \
-	   GFX/TGA.cpp \
-	   GFX/TextLabel.cpp \
-	   GFX/TextRenderer.cpp \
-	   Game/GameEngine.cpp \
-	   GFX/RenderEngine.cpp \
-	   Input/InputManager.cpp \
-	   Input/Controller/FPSController.cpp \
-	   Models/Model.cpp
+EXE = c++ube
+SRCDIR = src
+SRCS = $(SRCDIR)/main.cpp \
+       $(SRCDIR)/GFX/GL/Shader.cpp \
+       $(SRCDIR)/GFX/GL/FBO.cpp \
+       $(SRCDIR)/GFX/GL/VBO.cpp \
+	   $(SRCDIR)/GFX/GL/Texture.cpp \
+	   $(SRCDIR)/GFX/TGA.cpp \
+	   $(SRCDIR)/GFX/TextLabel.cpp \
+	   $(SRCDIR)/GFX/TextRenderer.cpp \
+	   $(SRCDIR)/Game/GameEngine.cpp \
+	   $(SRCDIR)/GFX/RenderEngine.cpp \
+	   $(SRCDIR)/Input/InputManager.cpp \
+	   $(SRCDIR)/Input/Controller/FPSController.cpp \
+	   $(SRCDIR)/Models/Model.cpp
 
 ASSIMP_PATH = Thirdparty/assimp
 ASSIMP_LIB_PATH = $(ASSIMP_PATH)/lib
 
 GCC_COLOR_MODE = auto
-CXXFLAGS = -Wall -O2 -g -std=c++14 -iquote. -MMD -MP \
+CXXFLAGS = -Wall -O2 -g -std=c++14 -iquote$(SRCDIR) -MMD -MP \
            -fdiagnostics-color=$(GCC_COLOR_MODE) -isystem$(ASSIMP_PATH)/include
 
 LDLIBS =
@@ -62,6 +63,7 @@ DEPS = $(SRCS:.cpp=.d)
 
 all: $(EXE)
 $(EXE): $(OBJS) $(ASSIMP_LIB)
+	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@
 -include $(DEPS)
 
 ASSIMP_JOBS = 8
