@@ -46,7 +46,7 @@ Model::Model(const std::string &filename) : _vbo(nullptr) {
 	const aiScene *scene = importer.ReadFile(
 		filename.c_str(),
 		aiProcess_JoinIdenticalVertices | aiProcess_Triangulate |
-		aiProcess_GenSmoothNormals | aiProcess_SortByPType
+		aiProcess_GenSmoothNormals | aiProcess_SortByPType | aiProcess_PreTransformVertices
 	);
 
 	if (scene) {
