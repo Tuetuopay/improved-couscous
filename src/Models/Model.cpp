@@ -24,13 +24,15 @@
 #include "Models/Model.h"
 
 #include <vector>
+#include <list>
+#include <glm/glm.hpp>
 
 // Use AssImp
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-namespace models {
+namespace Models {
 
 Model::Model(const std::string &filename) : _vbo(nullptr) {
 	// Load model through assimp
@@ -57,9 +59,9 @@ Model::Model(const std::string &filename) : _vbo(nullptr) {
 
 		for (int i = 0; i < mesh->mNumFaces; i++) {
 			const aiFace &face = mesh->mFaces[i];
-			idxBuffer[(i * 3) + 0] = face.mIndices[0];
-			idxBuffer[(i * 3) + 1] = face.mIndices[1];
-			idxBuffer[(i * 3) + 2] = face.mIndices[2];
+			idxBuffer.push_back(face.mIndices[0]);
+			idxBuffer.push_back(face.mIndices[1]);
+			idxBuffer.push_back(face.mIndices[2]);
 		}
 
 		// Give null everywhere since we'll manually set buffers one by one
@@ -78,7 +80,11 @@ Model::Model(const std::string &filename) : _vbo(nullptr) {
 		if (mesh->HasVertexColors(0))
 			_vbo->setColors(&mesh->mColors[0][0].r);
 
-		_vbo->setIndexes(&idxBuffer[0], idxBuffer.size());
+		_vbo->setIndexes(&idxBuffer[0], mesh->mNumFaces * 3);
+
+		// The shader _may_ expect instancing
+		glm::mat4 instance(1);
+		_vbo->setInstanced(&instance, 1);
 	}
 	else
 		std::cerr << "Failed to load mesh '" << filename << "' : " <<
