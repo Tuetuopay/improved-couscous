@@ -155,15 +155,20 @@ template void VBO::setInstanced<glm::vec2>(const glm::vec2* data, const size_t &
 template void VBO::setInstanced<float>(const float* data, const size_t &count);
 template void VBO::setInstanced<int>(const int* data, const size_t &count);
 
-void VBO::setBuffer(const int attribNo, const float *buffer, const int elementSize) {
-	setBuffer(attribNo, (void*)buffer, GL_FLOAT, elementSize);
+void VBO::setBuffer(
+	const int attribNo, const float *buffer, const int elementSize, const int stride
+) {
+	setBuffer(attribNo, (void*)buffer, GL_FLOAT, elementSize, stride);
 }
-void VBO::setBuffer(const int attribNo, const int *buffer, const int elementSize) {
-	setBuffer(attribNo, (void*)buffer, GL_INT, elementSize);
+void VBO::setBuffer(
+	const int attribNo, const int *buffer, const int elementSize, const int stride
+) {
+	setBuffer(attribNo, (void*)buffer, GL_INT, elementSize, stride);
 }
 
 void VBO::setBuffer(
-	const int attribNo, const void *buffer, const GLenum type, const int elementSize
+	const int attribNo, const void *buffer, const GLenum type, const int elementSize,
+	const int stride
 ) {
 	auto bufPos = _buffers.find(attribNo);
 	GLuint buf = 0;
@@ -180,22 +185,30 @@ void VBO::setBuffer(
 		(type == GL_FLOAT ? sizeof(float) : sizeof(GLuint)) * _nVertex * elementSize,
 		buffer, GL_DYNAMIC_DRAW
 	);
-	glVertexAttribPointer(attribNo, elementSize, type, GL_FALSE, 0, 0);
+	glVertexAttribPointer(attribNo, elementSize, type, GL_FALSE, stride, 0);
 	glEnableVertexAttribArray(attribNo);
 }
 
-void VBO::setVertices(const float *vertices, const int nVertices, const int nVertData) {
+void VBO::setVertices(
+	const float *vertices, const int nVertices, const int nVertData, const int stride
+) {
 	_nVertex = nVertices;
-	setBuffer(0, vertices, nVertData);
+	setBuffer(0, vertices, nVertData, stride);
 }
-void VBO::setTextures(const float *textures, const int nTexData) {
-	setBuffer(1, textures, nTexData);
+void VBO::setTextures(
+	const float *textures, const int nTexData, const int stride
+) {
+	setBuffer(1, textures, nTexData, stride);
 }
-void VBO::setColors(const float *colors, const int nColData) {
-	setBuffer(2, colors, nColData);
+void VBO::setColors(
+	const float *colors, const int nColData, const int stride
+) {
+	setBuffer(2, colors, nColData, stride);
 }
-void VBO::setNormals(const float *normals) {
-	setBuffer(3, normals, 3);
+void VBO::setNormals(
+	const float *normals, const int stride
+) {
+	setBuffer(3, normals, 3, stride);
 }
 void VBO::setIndexes(const GLuint *indexes, const int nIndexes) {
 	_nIndexes = nIndexes;

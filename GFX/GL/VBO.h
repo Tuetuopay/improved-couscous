@@ -54,16 +54,29 @@ public:
 	template<typename T>
 	void setInstanced(const T* data, const size_t &count);
 
-	void setBuffer(const int attribNo, const float *buffer, const int elementSize);
-	void setBuffer(const int attribNo, const int *buffer, const int elementSize);
 	void setBuffer(
-		const int attribNo, const void *buffer, const GLenum type, const int elementSize
+		const int attribNo, const float *buffer, const int elementSize, const int stride = 0
+	);
+	void setBuffer(
+		const int attribNo, const int *buffer, const int elementSize, const int stride = 0
+	);
+	void setBuffer(
+		const int attribNo, const void *buffer, const GLenum type, const int elementSize,
+		const int stride = 0
 	);
 
-	void setVertices(const float *vertices, const int nVertices, const int nVertData = 3);
-	void setTextures(const float *textures, const int nTexData = 2);
-	void setColors(const float *colors, const int nColData = 4);
-	void setNormals(const float *normals);
+	void setVertices(
+		const float *vertices, const int nVertices, const int nVertData = 3, const int stride = 0
+	);
+	void setTextures(
+		const float *textures, const int nTexData = 2, const int stride = 0
+	);
+	void setColors(
+		const float *colors, const int nColData = 4, const int stride = 0
+	);
+	void setNormals(
+		const float *normals, const int stride = 0
+	);
 	void setIndexes(const GLuint *indexes, const int nIndexes);
 
 private:
