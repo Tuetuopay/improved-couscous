@@ -28,16 +28,24 @@
 #include <string>
 #include "GFX/GL/VBO.h"
 
-namespace models {
+namespace Models {
 
 class Model {
+public:
 	/**
 	 * Builds a new model from a file
+	 * @param filename path to the file containing the model data
 	 */
 	Model(const std::string &filename);
 
-public:
+	/**
+	 * Well ... renders the model
+	 */
+	inline void render() { _vbo->render(); }
+
 	~Model();
+
+	std::shared_ptr<GFX::GL::VBO> vbo() { return _vbo; }
 
 protected:
 	// Actual GL model
