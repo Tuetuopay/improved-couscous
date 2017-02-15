@@ -69,6 +69,7 @@ public:
 	inline virtual void setTarget(const glm::vec3 &target) { _target = target; }
 	inline virtual void setUp(const glm::vec3 &up) { _up = up; }
 	inline virtual void setCamAcc(const glm::vec3 &acc) { _camAcc = acc; }
+	inline virtual void setRelativeTarget(const bool &relative) { _relativeTarget = relative; }
 
 	inline virtual void print(std::ostream &out) const {
 		out << "p(" << glm::to_string(_pos) << ")), t(" << glm::to_string(_target) << ")";

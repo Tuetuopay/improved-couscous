@@ -34,6 +34,7 @@ class FPSController : public InputListener {
 public:
 	FPSController(Game::Entities::Camera *e)
 	 : _e(e), _yaw(0), _pitch(0), _fw(0.0), _rw(0.0), _sensitivity(4.0), _acc(3.0) {
+		e->setRelativeTarget(true);
 		// Simulate a static mouse motion to force-update the underlying camera
 		processMouseMotion(0, 0, 0, 0, false);
 	}
