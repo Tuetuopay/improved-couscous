@@ -49,9 +49,6 @@ namespace GFX {
 
 RenderEngine* RenderEngine::_instance = nullptr;
 
-double RenderEngine::_mouseX = 0.0, RenderEngine::_mouseY = 0.0;
-bool RenderEngine::_isClicking = false;
-
 RenderEngine::RenderEngine()
  : _winW(1280), _winH(720),
    _dts{0}, _dtsNo(0),
@@ -148,13 +145,6 @@ int RenderEngine::setup() {
 	_fboShadow = new GL::FBO(1280 * _scale, 720 * _scale);
 	_fboLight = new GL::FBO(1024, 1024, false, true, true);
 
-	/*
-	glfwSetKeyCallback(_window, processKeypress);
-	glfwSetCharCallback(_window, processText);
-	glfwSetCursorPosCallback(_window, processMousePosition);
-	glfwSetMouseButtonCallback(_window, processMouseButton);
-	glfwSetScrollCallback(_window, processScroll);
-	*/
 	Input::InputManager *inputManager = Input::InputManager::instance();
 	inputManager->listen(_window->internalWindow());
 	inputManager->addListener(&_trackballController);
@@ -307,40 +297,6 @@ void RenderEngine::render3D(GL::Shader *shader) {
 				_cube->render();
 			}
 #endif
-}
-
-void RenderEngine::processKeypress(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	_instance->_gameEngine->processKeyboard(key, scancode, action, mods);
-}
-void RenderEngine::processText(GLFWwindow *window, unsigned int codepoint) {
-	// UTF-8 <-> UTF-32 converter
-	static std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> cvt;
-	std::wstring s(1, codepoint);
-	_instance->_gameEngine->processText(cvt.to_bytes(s));
-}
-void RenderEngine::processMousePosition(GLFWwindow *window, double xpos, double ypos) {
-	_instance->_gameEngine->processMouseMotion(
-		xpos, ypos, xpos - _mouseX, ypos - _mouseY, _isClicking
-	);
-	_mouseX = xpos; _mouseY = ypos;
-}
-void RenderEngine::processMouseButton(GLFWwindow *window, int button, int action, int mods) {
-	_isClicking = action == GLFW_PRESS;
-	switch(button) {
-	case GLFW_MOUSE_BUTTON_LEFT:
-		_instance->_gameEngine->processLeftClick(_mouseX, _mouseY, !_isClicking);
-		break;
-	case GLFW_MOUSE_BUTTON_RIGHT:
-		_instance->_gameEngine->processRightClick(_mouseX, _mouseY, !_isClicking);
-		break;
-	case GLFW_MOUSE_BUTTON_MIDDLE:
-		_instance->_gameEngine->processMiddleClick(_mouseX, _mouseY, !_isClicking);
-		break;
-	default: break;
-	}
-}
-void RenderEngine::processScroll(GLFWwindow *window, double dx, double dy) {
-	_instance->_gameEngine->processScroll(dx, dy);
 }
 
 RenderEngine::~RenderEngine() {

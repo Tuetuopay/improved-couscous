@@ -101,14 +101,6 @@ private:
 
 	Game::Entities::Camera _camera, _light;
 	Input::Controller::TrackballController _trackballController;
-
-	static void processKeypress(GLFWwindow* window, int key, int scancode, int action, int mods);
-	static void processText(GLFWwindow *window, unsigned int codepoint);
-	static void processMousePosition(GLFWwindow *window, double xpos, double ypos);
-	static void processMouseButton(GLFWwindow *window, int button, int action, int mods);
-	static void processScroll(GLFWwindow *window, double dx, double dy);
-	static double _mouseX, _mouseY;
-	static bool _isClicking;
 };
 
 }
