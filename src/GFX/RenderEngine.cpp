@@ -62,38 +62,8 @@ RenderEngine::RenderEngine()
    {}
 
 int RenderEngine::setup() {
-	// GLFW
-	if (!glfwInit()) {
-		std::cerr << "Failed to init GLFW" << std::endl;
-		return -1;
-	}
-
-	// Open Window
-	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); // We want OpenGL 3.3
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
-
-	if (!(_window = glfwCreateWindow(_winW, _winH, "C++Ube", NULL, NULL))) {
-		std::cerr << "Failed to open window" << std::endl;
-		glfwTerminate();
-		return -2;
-	}
-
-	glfwMakeContextCurrent(_window);
-	glewExperimental = true;
-
-	if (glewInit() != GLEW_OK) {
-		std::cout << "Failed to init glew" << std::endl;
-		glfwTerminate();
-		return -3;
-	}
-
-	// Fetching the actual buffer size to get the scaling
-	int actualW, actualH;
-	glfwGetFramebufferSize(_window, &actualW, &actualH);
-	_scale = float(actualW) / _winW;
+	_window = new Window("C++Ube", _winW, _winH);
+	_scale = float(_window->physicalW()) / _winW;
 	std::cout << "scale = " << _scale << std::endl;
 
 	glClearColor(0.0f, 0.0f, 0.4f, 1.0f);
@@ -186,7 +156,7 @@ int RenderEngine::setup() {
 	glfwSetScrollCallback(_window, processScroll);
 	*/
 	Input::InputManager *inputManager = Input::InputManager::instance();
-	inputManager->listen(_window);
+	inputManager->listen(_window->internalWindow());
 	inputManager->addListener(&_trackballController);
 
 	// TMP
@@ -286,7 +256,7 @@ void RenderEngine::render() {
 	_textRenderer2D->render(_matHUD);
 	glEnable(GL_CULL_FACE);
 
-	glfwSwapBuffers(_window);
+	glfwSwapBuffers(_window->internalWindow());
 	glfwPollEvents();
 }
 

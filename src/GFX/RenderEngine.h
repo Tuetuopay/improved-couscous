@@ -26,8 +26,6 @@
 
 namespace Game { class GameEngine; }
 
-// GLFWWindow forward declaration
-typedef struct GLFWwindow GLFWwindow;
 #include <glm/glm.hpp>
 
 #include "GFX/GL/VBO.h"
@@ -35,6 +33,7 @@ typedef struct GLFWwindow GLFWwindow;
 #include "GFX/GL/Shader.h"
 #include "GFX/TextRenderer.h"
 #include "GFX/TextLabel.h"
+#include "GFX/Window.h"
 
 #include "Game/GameData.h"
 
@@ -79,7 +78,7 @@ private:
 	void render3D(GL::Shader *shader);
 
 	// Internal data
-	GLFWwindow *_window;
+	Window *_window;
 	glm::mat4 _matProj, _matOrtho, _matView, _matModel, _matMVP, _matHUD;
 	GFX::GL::VBO *_cube, *_square;
 	Models::Model *_suzanne;
