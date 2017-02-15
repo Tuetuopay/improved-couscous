@@ -349,7 +349,7 @@ RenderEngine::~RenderEngine() {
 	delete _shaderSSAO;
 	delete _shaderDepth;
 
-	glfwTerminate();
+	delete _window;
 }
 
 }

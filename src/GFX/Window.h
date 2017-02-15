@@ -51,7 +51,7 @@ public:
 	 */
 	Window(const std::string &title, const int width, const int height);
 
-	~Window();
+	virtual ~Window();
 
 	/**
 	 * Accesses the logical size of the window in points

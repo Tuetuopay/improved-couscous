@@ -65,5 +65,12 @@ Window::Window(const std::string &title, const int w, const int h)
 	}
 }
 
+Window::~Window() {
+#if defined(WINDOW_BACKEND_GLFW3)
+	glfwTerminate();
+#elif defined(WINDOW_BACKEND_SDL2)
+#endif
+}
+
 }
 
