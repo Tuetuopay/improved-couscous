@@ -21,14 +21,12 @@
  * IN THE SOFTWARE.
  **/
 
-#include "GameEngine.h"
-#include "GFX/RenderEngine.h"
-
-#include <GLFW/glfw3.h>
-
 #include <iostream>
 
+#include "GameEngine.h"
+#include "GFX/RenderEngine.h"
 #include "Input/InputManager.h"
+#include "WindowBackend.h"
 
 namespace Game {
 
@@ -53,15 +51,15 @@ int GameEngine::setup() {
 }
 
 void GameEngine::run() {
-	double beginTime = glfwGetTime(), endTime = glfwGetTime();
+	double beginTime = backendGetTime(), endTime = backendGetTime();
 
 	while (_running) {
-		beginTime = glfwGetTime();
+		beginTime = backendGetTime();
 		_gameData.currentTime = beginTime;
 
 		frame();
 		_renderEngine->render();
-		endTime = glfwGetTime();
+		endTime = backendGetTime();
 
 		_gameData.dt = endTime - beginTime;
 	}
@@ -79,7 +77,7 @@ void GameEngine::processScroll(double dx, double dy) {
 }
 void GameEngine::processKeyboard(int key, int scancode, int action, int mods) {
 	switch (key) {
-	case GLFW_KEY_ESCAPE:
+	case HID_KEY_ESCAPE:
 		_running = false;
 		break;
 	}
