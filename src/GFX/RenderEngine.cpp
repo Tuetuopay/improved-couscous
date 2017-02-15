@@ -29,9 +29,6 @@
 #include <codecvt>
 #include <list>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
@@ -247,7 +244,7 @@ void RenderEngine::render() {
 	glEnable(GL_CULL_FACE);
 
 	_window->swapBuffer();
-	glfwPollEvents();
+	Input::InputManager::pollEvents();
 }
 
 void RenderEngine::render3D(GL::Shader *shader) {

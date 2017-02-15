@@ -99,5 +99,9 @@ void InputManager::ungrabMouse() {
 	glfwSetInputMode(_win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
+void InputManager::pollEvents() {
+	glfwPollEvents();
+}
+
 }
 

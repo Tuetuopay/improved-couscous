@@ -50,6 +50,8 @@ public:
 	void grabMouse();
 	void ungrabMouse();
 
+	static void pollEvents();
+
 private:
 	// Holds the window we listrn to
 	GLFWwindow *_win;
