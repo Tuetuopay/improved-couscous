@@ -25,7 +25,6 @@
 
 #include <iostream>
 #include <cmath>
-#include <GLFW/glfw3.h>
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/string_cast.hpp>
 
