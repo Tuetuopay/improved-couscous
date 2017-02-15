@@ -28,7 +28,6 @@
 # include <GLFW/glfw3.h>
 #elif defined(WINDOW_BACKEND_SDL2)
 # include <SDL2/SDL.h>
-# error "SDL2 backend not yet implemented"
 #else
 # error "Unknown backend or no windowing backend selected"
 #endif
@@ -38,6 +37,7 @@ inline double backendGetTime() {
 #if defined(WINDOW_BACKEND_GLFW3)
 		glfwGetTime();
 #elif defined(WINDOW_BACKEND_SDL2)
+		double(SDL_GetTicks()) / 1000.0;
 #endif
 }
 

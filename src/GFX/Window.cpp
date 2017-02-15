@@ -55,11 +55,34 @@ Window::Window(const std::string &title, const int w, const int h)
 	// Fetching the actual buffer size to get the scaling
 	glfwGetFramebufferSize(_window, &_physicalW, &_physicalH);
 #elif defined(WINDOW_BACKEND_SDL2)
+	if (SDL_Init(SDL_INIT_VIDEO)) {
+		std::cerr << "Failed to init SDL : " << SDL_GetError() << std::endl;
+		return;
+	}
+
+	if (!(_window = SDL_CreateWindow(
+			title.c_str(),SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+			_w, _h, SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI
+		))) {
+		std::cerr << "Failed to open window : " << SDL_GetError() << std::endl;
+		SDL_Quit();
+		return;
+	}
+
+	// Create OpenGL context
+	SDL_GL_CreateContext(_window);
+
+	// Get pixel size
+	SDL_GL_GetDrawableSize(_window, &_physicalW, &_physicalH);
 #endif
 
 	if (glewInit() != GLEW_OK) {
 		std::cout << "Failed to init glew" << std::endl;
+#if defined(WINDOW_BACKEND_GLFW3)
 		glfwTerminate();
+#elif defined(WINDOW_BACKEND_SDL2)
+		SDL_Quit();
+#endif
 		_window = nullptr;
 		return;
 	}
@@ -69,6 +92,7 @@ Window::~Window() {
 #if defined(WINDOW_BACKEND_GLFW3)
 	glfwTerminate();
 #elif defined(WINDOW_BACKEND_SDL2)
+	SDL_Quit();
 #endif
 }
 

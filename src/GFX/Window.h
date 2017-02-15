@@ -33,6 +33,7 @@
 // Alias for the internal window
 typedef GLFWwindow InternalWindow;
 #elif defined(WINDOW_BACKEND_SDL2)
+typedef SDL_Window InternalWindow;
 #endif
 
 namespace GFX {
@@ -73,6 +74,7 @@ public:
 #if defined(WINDOW_BACKEND_GLFW3)
 		glfwSwapBuffers(_window);
 #elif defined(WINDOW_BACKEND_SDL2)
+		SDL_GL_SwapWindow(_window);
 #endif
 	}
 
