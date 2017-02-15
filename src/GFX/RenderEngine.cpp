@@ -256,7 +256,7 @@ void RenderEngine::render() {
 	_textRenderer2D->render(_matHUD);
 	glEnable(GL_CULL_FACE);
 
-	glfwSwapBuffers(_window->internalWindow());
+	_window->swapBuffer();
 	glfwPollEvents();
 }
 

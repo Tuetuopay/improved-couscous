@@ -70,6 +70,16 @@ public:
 	 */
 	inline virtual InternalWindow* internalWindow() { return _window; }
 
+	/**
+	 * Swaps the displayed buffer with the current OpenGL buffer
+	 */
+	inline virtual void swapBuffer() const {
+#if defined(WINDOW_BACKEND_GLFW3)
+		glfwSwapBuffers(_window);
+#elif defined(WINDOW_BACKEND_SDL2)
+#endif
+	}
+
 protected:
 	// Window's size
 	int _w, _h,
