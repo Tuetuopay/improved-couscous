@@ -8,6 +8,7 @@ SRCS = $(SRCDIR)/main.cpp \
 	   $(SRCDIR)/GFX/TGA.cpp \
 	   $(SRCDIR)/GFX/TextLabel.cpp \
 	   $(SRCDIR)/GFX/TextRenderer.cpp \
+       $(SRCDIR)/GFX/Window.cpp \
 	   $(SRCDIR)/Game/GameEngine.cpp \
 	   $(SRCDIR)/GFX/RenderEngine.cpp \
 	   $(SRCDIR)/Input/InputManager.cpp \
@@ -57,7 +58,7 @@ else
 	endif
 endif
 
-CXXFLAGS += -DWINDOW_BACKEND=$(WINDOW_BACKEND)
+CXXFLAGS += -DWINDOW_BACKEND_$(shell echo $(WINDOW_BACKEND) | tr '[:lower:]' '[:upper:]')
 
 OUTDIR = out
 
