@@ -42,6 +42,7 @@ public:
 
 	virtual void
 	processMouseMotion(double x, double y, double xrel, double yrel, bool isClicking) override;
+	virtual void processScroll(double dx, double dy) override;
 
 private:
 	// The controlled entity

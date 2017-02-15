@@ -52,6 +52,13 @@ TrackballController::processMouseMotion(double x, double y, double dx, double dy
 	_updateEntity();
 }
 
+
+void TrackballController::processScroll(double dx, double dy) {
+	_distance += dy;
+
+	_updateEntity();
+}
+
 void TrackballController::_updateEntity() {
 	_e->setTarget(glm::vec3(0));
 	_e->setUp(glm::cross(_right, _look));
