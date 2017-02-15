@@ -12,6 +12,7 @@ SRCS = $(SRCDIR)/main.cpp \
 	   $(SRCDIR)/GFX/RenderEngine.cpp \
 	   $(SRCDIR)/Input/InputManager.cpp \
 	   $(SRCDIR)/Input/Controller/FPSController.cpp \
+       $(SRCDIR)/Input/Controller/TrackballController.cpp \
 	   $(SRCDIR)/Models/Model.cpp
 
 ASSIMP_PATH = Thirdparty/assimp
