@@ -54,7 +54,7 @@ TrackballController::processMouseMotion(double x, double y, double dx, double dy
 
 
 void TrackballController::processScroll(double dx, double dy) {
-	_distance += dy;
+	_distance *= exp(dy / 100.0);
 
 	_updateEntity();
 }
