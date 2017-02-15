@@ -143,7 +143,7 @@ int RenderEngine::setup() {
 	_fboLight = new GL::FBO(1024, 1024, false, true, true);
 
 	Input::InputManager *inputManager = Input::InputManager::instance();
-	inputManager->listen(_window->internalWindow());
+	inputManager->listen(_window);
 	inputManager->addListener(&_trackballController);
 
 	// TMP

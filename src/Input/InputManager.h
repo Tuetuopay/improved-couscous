@@ -24,10 +24,10 @@
 #ifndef _INPUT_INPUT_MANAGER_H
 #define _INPUT_INPUT_MANAGER_H
 
-typedef struct GLFWwindow GLFWwindow;
 #include <string>
 #include <list>
 
+#include "GFX/Window.h"
 #include "Input/InputListener.h"
 
 namespace Input {
@@ -36,7 +36,7 @@ class InputManager {
 	InputManager();
 public:
 	// Sets to which window we listen for events
-	void listen(GLFWwindow *window);
+	void listen(GFX::Window *window);
 
 	inline void addListener(InputListener *listener) {
 		_listeners.push_back(listener);
@@ -54,7 +54,7 @@ public:
 
 private:
 	// Holds the window we listrn to
-	GLFWwindow *_win;
+	GFX::Window *_win;
 
 	// Instance
 	static InputManager *_instance;
@@ -85,12 +85,16 @@ private:
 	// Listeners
 	std::list<InputListener*> _listeners;
 
+#if defined(WINDOW_BACKEND_GLFW3)
 	// GLFW callbacks
 	static void processKeypress(GLFWwindow* window, int key, int scancode, int action, int mods);
 	static void processText(GLFWwindow *window, unsigned int codepoint);
 	static void processMousePosition(GLFWwindow *window, double xpos, double ypos);
 	static void processMouseButton(GLFWwindow *window, int button, int action, int mods);
 	static void processScroll(GLFWwindow *window, double dx, double dy);
+#elif defined(WINDOW_BACKEND_SDL2)
+#endif
+
 	double _mouseX, _mouseY;
 	bool _isClicking;
 };

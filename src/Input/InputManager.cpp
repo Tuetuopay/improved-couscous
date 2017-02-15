@@ -28,37 +28,40 @@
 #include <locale>
 #include <codecvt>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 namespace Input {
 
 InputManager* InputManager::_instance = nullptr;
 
 InputManager::InputManager() : _win(nullptr), _mouseX(0.0), _mouseY(0.0), _isClicking(false) {}
 
-void InputManager::listen(GLFWwindow *window) {
+void InputManager::listen(GFX::Window *window) {
+#if defined(WINDOW_BACKEND_GLFW3)
 	if (_win) {
-		glfwSetKeyCallback(_win, nullptr);
-		glfwSetCharCallback(_win, nullptr);
-		glfwSetCursorPosCallback(_win, nullptr);
-		glfwSetMouseButtonCallback(_win, nullptr);
-		glfwSetScrollCallback(_win, nullptr);
+		glfwSetKeyCallback(_win->internalWindow(), nullptr);
+		glfwSetCharCallback(_win->internalWindow(), nullptr);
+		glfwSetCursorPosCallback(_win->internalWindow(), nullptr);
+		glfwSetMouseButtonCallback(_win->internalWindow(), nullptr);
+		glfwSetScrollCallback(_win->internalWindow(), nullptr);
 	}
 
-	glfwSetKeyCallback(window, processKeypress);
-	glfwSetCharCallback(window, processText);
-	glfwSetCursorPosCallback(window, processMousePosition);
-	glfwSetMouseButtonCallback(window, processMouseButton);
-	glfwSetScrollCallback(window, processScroll);
-	_win = window;
+	glfwSetKeyCallback(window->internalWindow(), processKeypress);
+	glfwSetCharCallback(window->internalWindow(), processText);
+	glfwSetCursorPosCallback(window->internalWindow(), processMousePosition);
+	glfwSetMouseButtonCallback(window->internalWindow(), processMouseButton);
+	glfwSetScrollCallback(window->internalWindow(), processScroll);
 
 	// Gettingn the current mouse position as it will avoid some horrible glitches
-	glfwGetCursorPos(_win, &_mouseX, &_mouseY);
+	glfwGetCursorPos(window->internalWindow(), &_mouseX, &_mouseY);
+#elif defined(WINDOW_BACKEND_SDL2)
+#endif
+
+	_win = window;
 }
 
+#if defined(WINDOW_BACKEND_GLFW3)
 // Static callbacks
-void InputManager::processKeypress(GLFWwindow* window, int key, int scancode, int action, int mods) {
+void
+InputManager::processKeypress(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	_instance->processKeyboard(key, scancode, action, mods);
 }
 void InputManager::processText(GLFWwindow *window, unsigned int codepoint) {
@@ -77,13 +80,19 @@ void InputManager::processMouseButton(GLFWwindow *window, int button, int action
 	_instance->_isClicking = action == GLFW_PRESS;
 	switch(button) {
 	case GLFW_MOUSE_BUTTON_LEFT:
-		_instance->processLeftClick(_instance->_mouseX, _instance->_mouseY, !_instance->_isClicking);
+		_instance->processLeftClick(
+			_instance->_mouseX, _instance->_mouseY, !_instance->_isClicking
+		);
 		break;
 	case GLFW_MOUSE_BUTTON_RIGHT:
-		_instance->processRightClick(_instance->_mouseX, _instance->_mouseY, !_instance->_isClicking);
+		_instance->processRightClick(
+			_instance->_mouseX, _instance->_mouseY, !_instance->_isClicking
+		);
 		break;
 	case GLFW_MOUSE_BUTTON_MIDDLE:
-		_instance->processMiddleClick(_instance->_mouseX, _instance->_mouseY, !_instance->_isClicking);
+		_instance->processMiddleClick(
+			_instance->_mouseX, _instance->_mouseY, !_instance->_isClicking
+		);
 		break;
 	default: break;
 	}
@@ -91,16 +100,27 @@ void InputManager::processMouseButton(GLFWwindow *window, int button, int action
 void InputManager::processScroll(GLFWwindow *window, double dx, double dy) {
 	_instance->processScroll(dx, dy);
 }
+#elif defined(WINDOW_BACKEND_SDL2)
+#endif
 
 void InputManager::grabMouse() {
-	glfwSetInputMode(_win, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+#if defined(WINDOW_BACKEND_GLFW3)
+	glfwSetInputMode(_win->internalWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+#elif defined(WINDOW_BACKEND_SDL2)
+#endif
 }
 void InputManager::ungrabMouse() {
-	glfwSetInputMode(_win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+#if defined(WINDOW_BACKEND_GLFW3)
+	glfwSetInputMode(_win->internalWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+#elif defined(WINDOW_BACKEND_SDL2)
+#endif
 }
 
 void InputManager::pollEvents() {
+#if defined(WINDOW_BACKEND_GLFW3)
 	glfwPollEvents();
+#elif defined(WINDOW_BACKEND_SDL2)
+#endif
 }
 
 }
