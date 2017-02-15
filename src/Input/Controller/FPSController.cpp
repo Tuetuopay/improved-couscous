@@ -25,7 +25,6 @@
 
 #include <iostream>
 #include <cmath>
-#include <GLFW/glfw3.h>
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/string_cast.hpp>
 
@@ -50,20 +49,20 @@ void FPSController::processMouseMotion(double x, double y, double dx, double dy,
 }
 
 void FPSController::processKeyboard(int key, int scancode, int action, int mods) {
-	int way = action == GLFW_PRESS ? 1 : (action == GLFW_RELEASE ? -1 : 0);
+	int way = action == HID_PRESS ? 1 : (action == HID_RELEASE ? -1 : 0);
 	if (way == 0) return;
 
 	switch (key) {
-	case GLFW_KEY_W:
+	case HID_KEY_W:
 		_fw += way;
 		break;
-	case GLFW_KEY_A:
+	case HID_KEY_A:
 		_rw -= way;
 		break;
-	case GLFW_KEY_S:
+	case HID_KEY_S:
 		_fw -= way;
 		break;
-	case GLFW_KEY_D:
+	case HID_KEY_D:
 		_rw += way;
 		break;
 	}
