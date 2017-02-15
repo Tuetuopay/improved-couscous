@@ -58,7 +58,7 @@ RenderEngine::RenderEngine()
    _gameEngine(nullptr), _gameData(nullptr),
    _camera(glm::vec3(2.5f, 5.f, 7.5f), glm::vec3(0), glm::vec3(0, 1, 0)),
    _light(glm::vec3(7.5f, 7.5f, 7.5f), glm::vec3(0.0, -0.0, 0.0), glm::vec3(0, 1, 0), false),
-   _fpsController(&_camera)
+   _trackballController(&_camera)
    {}
 
 int RenderEngine::setup() {
@@ -187,8 +187,7 @@ int RenderEngine::setup() {
 	*/
 	Input::InputManager *inputManager = Input::InputManager::instance();
 	inputManager->listen(_window);
-	inputManager->grabMouse();
-	inputManager->addListener(&_fpsController);
+	inputManager->addListener(&_trackballController);
 
 	// TMP
 	_matModel = glm::scale(glm::vec3(0.5, 0.5, 0.5)) * glm::translate(glm::vec3(-0.5, 0, -0.5));

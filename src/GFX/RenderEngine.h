@@ -39,7 +39,7 @@ typedef struct GLFWwindow GLFWwindow;
 #include "Game/GameData.h"
 
 #include "Game/Entities/Camera.h"
-#include "Input/Controller/FPSController.h"
+#include "Input/Controller/TrackballController.h"
 
 #include "Models/Model.h"
 
@@ -101,7 +101,7 @@ private:
 	std::shared_ptr<TextLabel> _labelFPS;
 
 	Game::Entities::Camera _camera, _light;
-	Input::Controller::FPSController _fpsController;
+	Input::Controller::TrackballController _trackballController;
 
 	static void processKeypress(GLFWwindow* window, int key, int scancode, int action, int mods);
 	static void processText(GLFWwindow *window, unsigned int codepoint);
