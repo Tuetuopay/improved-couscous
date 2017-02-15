@@ -29,6 +29,7 @@
 
 #include "GFX/Window.h"
 #include "Input/InputListener.h"
+#include "Input/InputDefines.h"
 
 namespace Input {
 
