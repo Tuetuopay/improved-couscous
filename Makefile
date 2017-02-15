@@ -25,13 +25,17 @@ CXXFLAGS = -Wall -O2 -g -std=c++14 -iquote$(SRCDIR) -MMD -MP \
 LDLIBS =
 LDFLAGS = -flto
 
+# Selects the abstraction library used to handle inputs, windowing, ...
+# Valid options are glfw3 and sdl2
+WINDOW_BACKEND = glfw3
+WINDOW_BACKEND_LIB = $(shell pkg-config --libs $(WINDOW_BACKEND) 2> /dev/null)
 
 ifeq ($(OS),Windows_NT)
 	CC = i686-w64-mingw32-c++
 	CXX = i686-w64-mingw32-c++
 	CXXFLAGS += -mwindows -D_USE_MATH_DEFINES
 
-	LDLIBS += -lglew32 -lglfw3 -lopengl32 -lgdi32
+	LDLIBS += -lglew32 $(WINDOW_BACKEND_LIB) -lopengl32 -lgdi32
 	LDFLAGS += -static-libstdc++ -static-libgcc
 	ASSIMP_LIB += $(ASSIMP_LIB_PATH)/libassimp.lib
 
@@ -42,16 +46,18 @@ else
 
 	UNAME = $(shell uname -s)
 	ifeq ($(UNAME),Linux)
-		LDLIBS += -lglfw -lGLEW -lm -lGL
+		LDLIBS += $(WINDOW_BACKEND_LIB) -lGLEW -lm -lGL
 		CXXFLAGS += -DOS_LINUX
 		ASSIMP_LIB += $(ASSIMP_LIB_PATH)/libassimp.so
 	endif
 	ifeq ($(UNAME),Darwin)
-		LDLIBS += -framework OpenGL -lglfw3 -lglew
+		LDLIBS += -framework OpenGL $(WINDOW_BACKEND_LIB) -lglew
 		CXXFLAGS += -DOS_OSX
 		ASSIMP_LIB += $(ASSIMP_LIB_PATH)/libassimp.dylib
 	endif
 endif
+
+CXXFLAGS += -DWINDOW_BACKEND=$(WINDOW_BACKEND)
 
 OUTDIR = out
 
