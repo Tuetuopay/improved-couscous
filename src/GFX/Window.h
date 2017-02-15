@@ -26,17 +26,13 @@
 
 #include <string>
 
-#if defined(WINDOW_BACKEND_GLFW3)
-# include <GLFW/glfw3.h>
+#include <GL/glew.h>
+#include "WindowBackend.h"
 
+#if defined(WINDOW_BACKEND_GLFW3)
 // Alias for the internal window
 typedef GLFWwindow InternalWindow;
-
 #elif defined(WINDOW_BACKEND_SDL2)
-# include <SDL2/SDL.h>
-# error "SDL2 backend not yet implemented"
-#else
-# error "Unknown backend or no windowing backend selected"
 #endif
 
 namespace GFX {
