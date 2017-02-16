@@ -43,6 +43,8 @@ uniform vec2 screensize;
 // units in space the AO effect extends to (this gets divided by the camera far range)
 #define AO_RANGE        10.0
 
+#define DO_AO
+
 float readDepth(in vec2 coord) {
 	return (2.0 * camerarange.x) /
             (camerarange.y + camerarange.x - texture(tex_depth, coord).x *
@@ -57,13 +59,16 @@ float compareDepths(in float depth1, in float depth2) {
 }
 
 void main() {
+	float ao = 1.0;
+#ifdef DO_AO
+	ao = 0.1;
+
 	float depth = readDepth(ex_UV);
 	float d;
 
 	float pw = 1.0 / screensize.x;
 	float ph = 1.0 / screensize.y;
 
-	float ao = 0.1;
 	float aoMultiplier = AO_MULTIPLIER;
 
 	float aoscale = 1.0;
@@ -91,6 +96,7 @@ void main() {
 
 	ao /= 16.0;
 	ao = clamp((1.0 - ao + 0.2), 0.0, 1.0);
+#endif
 
 	fragColor.a = texture(tex_color, ex_UV.st).a;
 
@@ -109,12 +115,7 @@ void main() {
 		for (xy.y = -blurRadius; xy.y <= blurRadius; xy.y++)
 			alpha += texture(tex_shadow_proj, ex_UV.st + vec2(2.0 / 1280.0, 2.0 / 720.0) * xy).a;
 	alpha /= pow(float(2*blurRadius + 1), 2.0);
-	fragColor.rgb = ao * alpha * texture(tex_color, ex_UV.st).rgb * 1.2;
-
-	if (ex_UV.s <= 1.0/6.0 && ex_UV.t <= 1.0/6.0) {
-		// fragColor.rgb = vec3(1, 1, 1) * texture(tex_shadow, ex_UV.st * 6.0).r;
-		fragColor.rgb = vec3((ao > 0.9 || ao < 0.1) ? 1.0 : 0.0);
-	}
+	fragColor.rgb = ao * alpha * texture(tex_color, ex_UV.st).rgb; // * 1.2;
 #endif
 }
 
