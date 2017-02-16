@@ -24,7 +24,7 @@
 #ifndef _VBO_H
 #define _VBO_H
 
-#include <GL/glew.h>
+#include "GL.h"
 
 #include <iostream>
 #include <list>

@@ -27,7 +27,7 @@
 #include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <GL/glew.h>
+#include "GL.h"
 
 #include "GFX/GL/VBO.h"
 

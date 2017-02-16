@@ -24,7 +24,7 @@
 #ifndef _TEXTURE_H
 #define _TEXTURE_H
 
-#include <GL/glew.h>
+#include "GL.h"
 #include <memory>
 
 #include "GFX/TGA.h"

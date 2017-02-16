@@ -21,41 +21,16 @@
  * IN THE SOFTWARE.
  **/
 
-#ifndef _FBO_H
-#define _FBO_H
+#ifndef _GL_H
+#define _GL_H
 
-#include "GL.h"
+#define GL3_PROTOTYPES 1
+#ifdef OS_OSX
+# include <OpenGL/gl3.h>
+# include <OpenGL/gl3ext.h>
+#else
+# include <GL/glew.h>
+#endif
 
-namespace GFX { namespace GL {
+#endif
 
-class FBO {
-public:
-	FBO(double screenWidth, double screenHeight,
-	    bool renderTexture = true, bool depthTexture = true, bool compareRefToTexture = false);
-	~FBO ();
-
-	void addRenderTexture();
-	// Set argument to true if you plan to use it as a sampler2DShadow in a shader
-	void addDepthTexture(bool compareRefToTexture = false);
-
-	void bind ();
-	void unbind ();
-
-	void enable ();
-	void disable ();
-
-	void bindRender (GLint textureUnit);
-	void bindDepth (GLint textureUnit);
-
-	GLuint depthTexture ();
-	GLuint renderTexture ();
-	GLuint frameBuffer ();
-
-private:
-	double _w, _h;
-	GLuint _bufID, _renderTexture, _depthTexture;
-};
-
-}}
-
-#endif /* defined(_FBO_H) */

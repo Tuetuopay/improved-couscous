@@ -21,7 +21,6 @@
  * IN THE SOFTWARE.
  **/
 
-#include <GL/glew.h>
 #include "GFX/Window.h"
 
 #include <iostream>
@@ -79,6 +78,7 @@ Window::Window(const std::string &title, const int w, const int h)
 	SDL_GL_GetDrawableSize(_window, &_physicalW, &_physicalH);
 #endif
 
+#ifndef OS_OSX
 	glewExperimental = true;
 	if (glewInit() != GLEW_OK) {
 		std::cout << "Failed to init glew" << std::endl;
@@ -90,6 +90,7 @@ Window::Window(const std::string &title, const int w, const int h)
 		_window = nullptr;
 		return;
 	}
+#endif
 }
 
 Window::~Window() {

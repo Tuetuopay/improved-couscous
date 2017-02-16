@@ -29,7 +29,7 @@
 #include <map>
 #include <vector>
 
-#include <GL/glew.h>
+#include "GL.h"
 
 namespace GFX { namespace GL {
 

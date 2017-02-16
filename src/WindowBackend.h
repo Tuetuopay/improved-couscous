@@ -24,6 +24,8 @@
 #ifndef _WINDOW_BACKEND_H
 #define _WINDOW_BACKEND_H
 
+#include "GL.h"
+
 #if defined(WINDOW_BACKEND_GLFW3)
 # include <GLFW/glfw3.h>
 #elif defined(WINDOW_BACKEND_SDL2)

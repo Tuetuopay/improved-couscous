@@ -26,7 +26,6 @@
 
 #include <string>
 
-#include <GL/glew.h>
 #include "WindowBackend.h"
 
 #if defined(WINDOW_BACKEND_GLFW3)

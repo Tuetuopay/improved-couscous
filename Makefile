@@ -52,7 +52,7 @@ else
 		ASSIMP_LIB += $(ASSIMP_LIB_PATH)/libassimp.so
 	endif
 	ifeq ($(UNAME),Darwin)
-		LDLIBS += -framework OpenGL $(WINDOW_BACKEND_LIB) -lglew
+		LDLIBS += -framework OpenGL $(WINDOW_BACKEND_LIB)
 		CXXFLAGS += -DOS_OSX
 		ASSIMP_LIB += $(ASSIMP_LIB_PATH)/libassimp.dylib
 	endif
