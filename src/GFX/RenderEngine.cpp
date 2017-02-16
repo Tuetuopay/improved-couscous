@@ -261,6 +261,7 @@ void RenderEngine::render3D(GL::Shader *shader) {
 	shader->pushUniform("matMVP", 1, GL_FALSE, &_matMVP[0][0], 4);
 	_matMVP = biasMatrix * _matOrtho * _light.matrix();
 	shader->pushUniform("lightMVP", 1, GL_FALSE, &_matMVP[0][0], 4);
+	shader->pushUniform("light", _light.pos().x, _light.pos().y, _light.pos().z);
 	_cube->render();
 
 	_suzanne->render();

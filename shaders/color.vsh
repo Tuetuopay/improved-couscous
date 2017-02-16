@@ -26,17 +26,24 @@
 layout(location = 0) in vec3 in_Position;
 layout(location = 1) in vec2 in_UV;
 layout(location = 2) in vec3 in_Color;
+layout(location = 3) in vec3 in_Normal;
 layout(location = 4) in mat4 in_Model;
 
 out vec3 ex_Color;
 out vec2 ex_UV;
+out vec3 ex_Normal;
+out vec4 ex_ShadedColor;
 
 uniform mat4 matMVP;
+uniform vec3 light;
 
 void main() {
 	gl_Position = matMVP * in_Model * vec4(in_Position, 1);
 
 	ex_Color = in_Color;
 	ex_UV = in_UV;
+	ex_Normal = in_Normal;
+
+	ex_ShadedColor = vec4(vec3(dot(ex_Normal, normalize(light - gl_Position.xyz))), 1.0);
 }
 

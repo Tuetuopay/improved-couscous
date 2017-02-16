@@ -25,12 +25,14 @@
 
 in vec3 ex_Color;
 in vec2 ex_UV;
+in vec3 ex_Normal;
+in vec4 ex_ShadedColor;
 
 out vec4 fragColor;
 
 uniform sampler2D tex;
 
 void main() {
-	fragColor = texture(tex, ex_UV);
+	fragColor = texture(tex, ex_UV) * ex_ShadedColor;
 }
 
