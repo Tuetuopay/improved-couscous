@@ -145,7 +145,7 @@ int InputManager::processEvent(void *userdata, SDL_Event *event) {
 		break;
 
 	case SDL_MOUSEWHEEL:
-		_instance->processScroll(double(event->wheel.x) / 10.0, double(event->wheel.y) / 10.0);
+		_instance->processScroll(double(event->wheel.x), double(event->wheel.y));
 		break;
 
 	case SDL_KEYUP:
