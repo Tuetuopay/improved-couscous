@@ -100,8 +100,8 @@ void InputManager::processMouseButton(GLFWwindow *window, int button, int action
 void InputManager::processScroll(GLFWwindow *window, double dx, double dy) {
 	_instance->processScroll(dx, dy);
 }
+
 #elif defined(WINDOW_BACKEND_SDL2)
-#endif
 
 int InputManager::processEvent(void *userdata, SDL_Event *event) {
 	switch (event->type) {
@@ -162,6 +162,8 @@ int InputManager::processEvent(void *userdata, SDL_Event *event) {
 
 	return 1;
 }
+
+#endif
 
 void InputManager::grabMouse() {
 #if defined(WINDOW_BACKEND_GLFW3)
