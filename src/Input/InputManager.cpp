@@ -25,8 +25,11 @@
 
 #include <iostream>
 #include <string>
+
+#if defined(WINDOW_BACKEND_GLFW3)
 #include <locale>
 #include <codecvt>
+#endif
 
 namespace Input {
 
