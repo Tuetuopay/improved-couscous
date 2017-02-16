@@ -53,6 +53,7 @@ void InputManager::listen(GFX::Window *window) {
 	// Gettingn the current mouse position as it will avoid some horrible glitches
 	glfwGetCursorPos(window->internalWindow(), &_mouseX, &_mouseY);
 #elif defined(WINDOW_BACKEND_SDL2)
+	SDL_SetEventFilter(processEvent, nullptr);
 #endif
 
 	_win = window;
@@ -182,6 +183,7 @@ void InputManager::pollEvents() {
 #if defined(WINDOW_BACKEND_GLFW3)
 	glfwPollEvents();
 #elif defined(WINDOW_BACKEND_SDL2)
+	SDL_PumpEvents();
 #endif
 }
 
