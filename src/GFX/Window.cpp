@@ -50,7 +50,6 @@ Window::Window(const std::string &title, const int w, const int h)
 	}
 
 	glfwMakeContextCurrent(_window);
-	glewExperimental = true;
 
 	// Fetching the actual buffer size to get the scaling
 	glfwGetFramebufferSize(_window, &_physicalW, &_physicalH);
@@ -76,6 +75,7 @@ Window::Window(const std::string &title, const int w, const int h)
 	SDL_GL_GetDrawableSize(_window, &_physicalW, &_physicalH);
 #endif
 
+	glewExperimental = true;
 	if (glewInit() != GLEW_OK) {
 		std::cout << "Failed to init glew" << std::endl;
 #if defined(WINDOW_BACKEND_GLFW3)
