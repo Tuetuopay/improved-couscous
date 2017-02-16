@@ -27,6 +27,7 @@
 #include "GL.h"
 
 #if defined(WINDOW_BACKEND_GLFW3)
+# define GLFW_INCLUDE_GLCOREARB
 # include <GLFW/glfw3.h>
 #elif defined(WINDOW_BACKEND_SDL2)
 # include <SDL2/SDL.h>
