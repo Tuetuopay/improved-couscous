@@ -25,8 +25,6 @@
 #include "Game/GameEngine.h"
 
 #include <string>
-#include <locale>
-#include <codecvt>
 #include <list>
 
 #include <glm/glm.hpp>
