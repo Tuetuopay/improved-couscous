@@ -21,8 +21,8 @@
  * IN THE SOFTWARE.
  **/
 
-#ifndef _GL_H
-#define _GL_H
+#ifndef _COUSCOUS_GL_H
+#define _COUSCOUS_GL_H
 
 #define GL3_PROTOTYPES 1
 #ifdef OS_OSX
