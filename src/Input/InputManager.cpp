@@ -151,7 +151,7 @@ int InputManager::processEvent(void *userdata, SDL_Event *event) {
 	case SDL_KEYUP:
 	case SDL_KEYDOWN:
 		_instance->processKeyboard(
-			event->key.keysym.scancode, event->key.keysym.sym,
+			event->key.keysym.sym, event->key.keysym.scancode,
 			event->key.state, event->key.keysym.mod
 		);
 		break;
