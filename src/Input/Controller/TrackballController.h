@@ -33,10 +33,10 @@ namespace Input { namespace Controller {
 class TrackballController : public InputListener {
 public:
 	TrackballController(Game::Entities::Camera *e)
-	 : _e(e), _yaw(0), _pitch(0), _sensitivity(4.0), _distance(10.0) {
+	 : _e(e), _yaw(2), _pitch(-0.5), _sensitivity(4.0), _distance(4.0) {
 		e->setRelativeTarget(false);
 		// Simulate a static mouse motion to force-update the underlying camera
-		processMouseMotion(0, 0, 0, 0, false);
+		processMouseMotion(0, 0, 0, 0, true);
 	}
 	~TrackballController() {}
 
