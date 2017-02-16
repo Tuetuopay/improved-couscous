@@ -94,6 +94,7 @@ private:
 	static void processMouseButton(GLFWwindow *window, int button, int action, int mods);
 	static void processScroll(GLFWwindow *window, double dx, double dy);
 #elif defined(WINDOW_BACKEND_SDL2)
+	static int processEvent(void *userdata, SDL_Event *event);
 #endif
 
 	double _mouseX, _mouseY;

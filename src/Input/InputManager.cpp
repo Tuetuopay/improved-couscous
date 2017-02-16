@@ -103,6 +103,66 @@ void InputManager::processScroll(GLFWwindow *window, double dx, double dy) {
 #elif defined(WINDOW_BACKEND_SDL2)
 #endif
 
+int InputManager::processEvent(void *userdata, SDL_Event *event) {
+	switch (event->type) {
+		// Clicks
+	case SDL_MOUSEBUTTONUP:
+	case SDL_MOUSEBUTTONDOWN:
+		_instance->_mouseX = event->button.x;
+		_instance->_mouseY = event->button.y;
+		_instance->_isClicking = event->button.state == SDL_PRESSED;
+		switch (event->button.button) {
+		case SDL_BUTTON_LEFT:
+			_instance->processLeftClick(
+				event->button.x, event->button.y, event->button.state == SDL_RELEASED
+			);
+			break;
+		case SDL_BUTTON_RIGHT:
+			_instance->processRightClick(
+				event->button.x, event->button.y, event->button.state == SDL_RELEASED
+			);
+			break;
+		case SDL_BUTTON_MIDDLE:
+			_instance->processMiddleClick(
+				event->button.x, event->button.y, event->button.state == SDL_RELEASED
+			);
+			break;
+		}
+		break;
+
+	case SDL_MOUSEMOTION:
+		_instance->_mouseX = event->motion.x;
+		_instance->_mouseY = event->motion.y;
+		_instance->processMouseMotion(
+			event->motion.x, event->motion.y,
+			event->motion.xrel, event->motion.yrel,
+			_instance->_isClicking
+		);
+		break;
+
+	case SDL_MOUSEWHEEL:
+		_instance->processScroll(double(event->wheel.x) / 10.0, double(event->wheel.y) / 10.0);
+		break;
+
+	case SDL_KEYUP:
+	case SDL_KEYDOWN:
+		_instance->processKeyboard(
+			event->key.keysym.scancode, event->key.keysym.sym,
+			event->key.state, event->key.keysym.mod
+		);
+		break;
+
+	case SDL_TEXTINPUT:
+		_instance->processText(event->text.text);
+		break;
+
+	default:
+		return 0;
+	}
+
+	return 1;
+}
+
 void InputManager::grabMouse() {
 #if defined(WINDOW_BACKEND_GLFW3)
 	glfwSetInputMode(_win->internalWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
