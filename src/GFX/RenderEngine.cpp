@@ -57,6 +57,10 @@ RenderEngine::RenderEngine()
 
 int RenderEngine::setup() {
 	_window = new Window("C++Ube", _winW, _winH);
+	if (!_window->internalWindow()) {
+		std::cout << "Window is null!" << std::endl;
+		return -1;
+	}
 	_scale = float(_window->physicalW()) / _winW;
 	std::cout << "scale = " << _scale << std::endl;
 
