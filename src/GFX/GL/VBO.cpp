@@ -56,6 +56,8 @@ VBO::VBO (const float *vertices, const float *texture, const float *colors, cons
 		setNormals(normals);
 	if (indexes)
 		setIndexes(indexes, nIndexes);
+
+	glBindVertexArray(0);
 }
 
 VBO::~VBO () {
@@ -178,6 +180,7 @@ void VBO::setBuffer(
 		_buffers[attribNo] = buf;
 	}
 
+	glBindVertexArray(_vao);
 	glBindBuffer(GL_ARRAY_BUFFER, buf);
 	glBufferData(
 		GL_ARRAY_BUFFER,
