@@ -92,18 +92,6 @@ int RenderEngine::setup() {
 	_suzanne = new Models::Model("models/suzanne.obj");
 	_ground = new Models::Model("models/ground.obj");
 
-	// Generate instances
-	/*
-	std::list<glm::mat4*> matInstance;
-	for (int x = -COUNT; x <= COUNT; x++)
-		for (int z = -COUNT; z <= COUNT; z++) {
-			matInstance.push_back(new glm::mat4(
-				glm::translate(glm::vec3(x, 0, z)) * glm::translate(glm::vec3(-0.5, -3.5, -0.5))
-			));
-		}
-	_ground->vbo()->setInstanced(matInstance);
-	*/
-
 	// This quad is used for the offscreen rendering
 	float v2[] = {-1,-1, -1,1, 1,1, 1,-1},
 	      t2[] = {0,0, 0,1, 1,1, 1,0};
@@ -131,6 +119,15 @@ int RenderEngine::setup() {
 	_shaderSSAO->pushUniform("screensize", (GLfloat)_winW, (GLfloat)_winH);
 
 	_shaderDepth = new GL::Shader("depth");
+
+	_lights = new GL::UBO<LightUBO>("lights", 0);
+	_lights->data.enabled[0] = 1;
+	Components::Light &light = _lights->data.lights[0];
+	light.setDiffuse(glm::vec4(1.0, 0.0, 0.0, 1.0));
+	light.setSpecular(glm::vec4(1.0, 0.0, 0.0, 1.0));
+	light.setPosition(glm::vec4(0.0, 0.0, 2.0, 0.0));
+
+	_lights->attach(_shaderColor);
 
 	// FBO
 	_fbo = new GL::FBO(1280 * _scale, 720 * _scale);
@@ -186,7 +183,7 @@ void RenderEngine::render() {
 	for (int i = 0; i < 60; i++) fps += _dts[i];
 	fps /= 60.0;
 	_labelFPS->setText(
-		"FPS = " + std::to_string(1.f / fps) + "\n"
+		"FPS = " + std::to_string((int)roundf(1.f / fps)) + "\n"
 		"x, y, z \t\t\t(" + toString(_camera.pos()) + ")\n"
 		"dx, dy, dz \t\t(" + toString(_camera.vel()) + ")\n"
 		"ddx, ddy, ddz \t(" + toString(_camera.acc()) + ")\n"

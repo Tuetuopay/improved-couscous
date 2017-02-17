@@ -31,9 +31,11 @@ namespace Game { class GameEngine; }
 #include "GFX/GL/VBO.h"
 #include "GFX/GL/FBO.h"
 #include "GFX/GL/Shader.h"
+#include "GFX/GL/UBO.h"
 #include "GFX/TextRenderer.h"
 #include "GFX/TextLabel.h"
 #include "GFX/Window.h"
+#include "GFX/Components/Light.h"
 
 #include "Game/GameData.h"
 
@@ -43,6 +45,12 @@ namespace Game { class GameEngine; }
 #include "Models/Model.h"
 
 namespace GFX {
+
+typedef struct LightUBO {
+	Components::Light lights[8];
+	int enabled[8];
+} LightUBO;
+
 
 class RenderEngine {
 	// Private contructor
@@ -84,6 +92,7 @@ private:
 	Models::Model *_suzanne, *_ground;
 	GFX::GL::Shader *_shaderShadow, *_shaderSSAO, *_shaderDepth, *_shaderColor;
 	GFX::GL::FBO *_fbo, *_fboLight, *_fboShadow;
+	GFX::GL::UBO<LightUBO> *_lights;
 	// Window size
 	int _winW, _winH;
 	float _scale; // HIDPI scaling factor
