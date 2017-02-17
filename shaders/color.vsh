@@ -35,7 +35,17 @@ out vec3 ex_Normal;
 out vec4 ex_ShadedColor;
 
 uniform mat4 matMVP;
-uniform vec3 light;
+
+struct Light {
+	vec4 ambient, diffuse, specular, position;
+	vec3 spotDirection;
+	float spotExponent, spotCutoff, spotCosCutoff;
+	float attenuationConstant, attenuationLinear, attenuationQuadratic;
+};
+layout (std140) uniform lights {
+	Light in_lights[8];
+	bool in_enabled[8];
+};
 
 void main() {
 	gl_Position = matMVP * in_Model * vec4(in_Position, 1);
@@ -44,6 +54,13 @@ void main() {
 	ex_UV = in_UV;
 	ex_Normal = in_Normal;
 
-	ex_ShadedColor = vec4(vec3(dot(ex_Normal, normalize(light - gl_Position.xyz))), 1.0);
+	ex_ShadedColor = vec4(0.0, 0.0, 0.0, 1.0);
+
+	for (int i = 0; i < 8; i++) {
+		if (in_enabled[i]) {
+			float intensity = dot(ex_Normal, normalize(in_lights[i].position - gl_Position).xyz);
+			ex_ShadedColor.rgb += intensity * in_lights[i].diffuse.rgb;
+		}
+	}
 }
 

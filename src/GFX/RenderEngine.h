@@ -48,7 +48,7 @@ namespace GFX {
 
 typedef struct LightUBO {
 	Components::Light lights[8];
-	int enabled[8];
+	bool enabled[8];
 } LightUBO;
 
 
