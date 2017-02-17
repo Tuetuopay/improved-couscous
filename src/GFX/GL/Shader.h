@@ -85,6 +85,8 @@ public:
 
 	void useShader (bool use);
 
+	inline GLuint program() const { return _programShader; }
+
 private:
 	/* These are NOT filenames !!! These are shader GLSL code */
 	void loadShader (char *vertexShaderData, char *fragmentShaderData);
