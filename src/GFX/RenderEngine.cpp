@@ -38,7 +38,7 @@
 #include "Input/Controller/FPSController.h"
 #include "Game/Entities/Camera.h"
 
-#define COUNT 30
+#define COUNT 1
 
 namespace GFX {
 
@@ -89,27 +89,20 @@ int RenderEngine::setup() {
 	// Texture
 	GLuint texGrass = GL::textureFromTGA("textures/grass.tga");
 
-	// VBO
-	float vert[] = {0,0,0, 1,0,0, 1,1,0, 0,1,0, 0,0,0, 0,0,1, 0,1,1,
-	                1,1,1, 1,0,1, 1,0,0, 0,0,1, 1,0,1, 0,0,1, 1,0,1},
-	      tex[] =  {1,1, 2,1, 2,2, 1,2, 0,2, 0,3, 1,3, 2,3, 3,3, 3,2, 1,4, 2,4, 1,0, 2,0};
-	GLuint idx[]  = {2,1,0, 0,3,2, 3,4,5, 5,6,3, 6,10,11, 11,7,6, 7,8,9, 9,2,7, 7,2,3, 3,6,7,
-	                1,13,12, 12,0,1};
-	for (int i = 0; i < 28; i++) tex[i] /= 4.f;
-	_cube = new GL::VBO(vert, tex, nullptr, nullptr, 14, idx, 12 * 3, texGrass);
-
 	_suzanne = new Models::Model("models/suzanne.obj");
+	_ground = new Models::Model("models/ground.obj");
 
 	// Generate instances
+	/*
 	std::list<glm::mat4*> matInstance;
 	for (int x = -COUNT; x <= COUNT; x++)
 		for (int z = -COUNT; z <= COUNT; z++) {
-			int y = sin((x + z) / 2.0) * 2;
 			matInstance.push_back(new glm::mat4(
-				glm::translate(glm::vec3(x, y, z)) * glm::translate(glm::vec3(-0.5, -3.5, -0.5))
+				glm::translate(glm::vec3(x, 0, z)) * glm::translate(glm::vec3(-0.5, -3.5, -0.5))
 			));
 		}
-	_cube->setInstanced(matInstance);
+	_ground->vbo()->setInstanced(matInstance);
+	*/
 
 	// This quad is used for the offscreen rendering
 	float v2[] = {-1,-1, -1,1, 1,1, 1,-1},
@@ -262,48 +255,22 @@ void RenderEngine::render3D(GL::Shader *shader) {
 	_matMVP = biasMatrix * _matOrtho * _light.matrix();
 	shader->pushUniform("lightMVP", 1, GL_FALSE, &_matMVP[0][0], 4);
 	shader->pushUniform("light", _light.pos().x, _light.pos().y, _light.pos().z);
-	_cube->render();
 
 	_suzanne->render();
+	_ground->render();
 
 	glDisable(GL_CULL_FACE);
 	_textRenderer3D->render(_matProj * _matView);
 	glEnable(GL_CULL_FACE);
-
-#if 1==2
-	for (int x = -COUNT; x <= COUNT; x++)
-		for (int z = -COUNT; z <= COUNT; z++) {
-			int y = sin((x + z) / 2.0) * 2;
-			glm::mat4 mat = glm::translate(glm::vec3(x, y, z)) * glm::translate(glm::vec3(-0.5, -0.5, -0.5));
-			_matMVP = _matProj * _matView * mat;
-			shader->pushUniform("matMVP", 1, GL_FALSE, &_matMVP[0][0], 4);
-			// _matMVP = biasMatrix * _matOrtho * _light.matrix() * mat;
-			_matMVP = biasMatrix * _matOrtho * _light.matrix() * mat;
-			shader->pushUniform("lightMVP", 1, GL_FALSE, &_matMVP[0][0], 4);
-
-			_cube->render();
-		}
-#endif
-#if 1==2
-	for (int x = -COUNT; x <= COUNT; x++)
-		for (int y = -COUNT; y <= COUNT; y++)
-			for (int z = -COUNT; z <= COUNT; z++) {
-				glm::mat4 mat = glm::translate(glm::vec3(x, y, z)) *
-					glm::rotate(float(_gameData->currentTime + (x+y+z) / 8.f), glm::vec3(0, 1, 0)) *
-					_matModel;
-				_matMVP = _matProj * _matView * mat;
-				shader->pushUniform("matMVP", 1, GL_FALSE, &_matMVP[0][0], 4);
-
-				_cube->render();
-			}
-#endif
 }
 
 RenderEngine::~RenderEngine() {
-	delete _cube;
 	delete _shaderShadow;
 	delete _shaderSSAO;
 	delete _shaderDepth;
+
+	delete _suzanne;
+	delete _ground;
 
 	delete _window;
 }

@@ -80,8 +80,8 @@ private:
 	// Internal data
 	Window *_window;
 	glm::mat4 _matProj, _matOrtho, _matView, _matModel, _matMVP, _matHUD;
-	GFX::GL::VBO *_cube, *_square;
-	Models::Model *_suzanne;
+	GFX::GL::VBO  *_square;
+	Models::Model *_suzanne, *_ground;
 	GFX::GL::Shader *_shaderShadow, *_shaderSSAO, *_shaderDepth, *_shaderColor;
 	GFX::GL::FBO *_fbo, *_fboLight, *_fboShadow;
 	// Window size
