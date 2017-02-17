@@ -82,14 +82,21 @@ Model::Model(const std::string &filename) : _vbo(nullptr) {
 
 		_vbo->setIndexes(&idxBuffer[0], mesh->mNumFaces * 3);
 
+		printf(
+			"Built model \"%s\" with UV(%d), Normals(%d), Colors(%d)\n", filename.c_str(),
+			mesh->HasTextureCoords(0), mesh->HasNormals(), mesh->HasVertexColors(0)
+		);
+
 		// The shader _may_ expect instancing
-		glm::mat4 instance(1);
-		_vbo->setInstanced(&instance, 1);
+		glm::mat4 *instance = new glm::mat4(1);
+		_vbo->setInstanced(instance, 1);
 	}
 	else
 		std::cerr << "Failed to load mesh '" << filename << "' : " <<
 			importer.GetErrorString() << std::endl;
 }
+
+Model::~Model() {}
 
 }
 
