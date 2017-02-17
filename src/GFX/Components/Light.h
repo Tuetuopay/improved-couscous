@@ -38,46 +38,46 @@ public:
 		_attenuationConstant(1), _attenuationLinear(0), _attenuationQuadratic(0)
 	{}
 
-	inline virtual glm::vec4 ambient() { return _ambient; }
-	inline virtual glm::vec4 diffuse() { return _diffuse; }
-	inline virtual glm::vec4 specular() { return _specular; }
-	inline virtual glm::vec4 position() { return _position; }
-	inline virtual glm::vec3 spotDirection() { return _spotDirection; }
-	inline virtual float spotExponent() { return _spotExponent; }
-	inline virtual float spotCutoff() { return _spotCutoff; }
-	inline virtual float attenuationConstant() { return _attenuationConstant; }
-	inline virtual float attenuationLinear() { return _attenuationLinear; }
-	inline virtual float attenuationQuadratic() { return _attenuationQuadratic; }
+	inline glm::vec4 ambient() { return _ambient; }
+	inline glm::vec4 diffuse() { return _diffuse; }
+	inline glm::vec4 specular() { return _specular; }
+	inline glm::vec4 position() { return _position; }
+	inline glm::vec3 spotDirection() { return _spotDirection; }
+	inline float spotExponent() { return _spotExponent; }
+	inline float spotCutoff() { return _spotCutoff; }
+	inline float attenuationConstant() { return _attenuationConstant; }
+	inline float attenuationLinear() { return _attenuationLinear; }
+	inline float attenuationQuadratic() { return _attenuationQuadratic; }
 
-	inline virtual void setAmbient(const glm::vec4 &ambient) {
+	inline void setAmbient(const glm::vec4 &ambient) {
 		_ambient = glm::clamp(ambient, glm::vec4(0), glm::vec4(1));
 	}
-	inline virtual void setDiffuse(const glm::vec4 &diffuse) {
+	inline void setDiffuse(const glm::vec4 &diffuse) {
 		_diffuse = glm::clamp(diffuse, glm::vec4(0), glm::vec4(1));
 	}
-	inline virtual void setSpecular(const glm::vec4 &specular) {
+	inline void setSpecular(const glm::vec4 &specular) {
 		_specular = glm::clamp(specular, glm::vec4(0), glm::vec4(1));
 	}
-	inline virtual void setPosition(const glm::vec4 &position) {
+	inline void setPosition(const glm::vec4 &position) {
 		_position = position;
 	}
-	inline virtual void setSpotDirection(const glm::vec3 &spotDirection) {
+	inline void setSpotDirection(const glm::vec3 &spotDirection) {
 		_spotDirection = spotDirection;
 	}
-	inline virtual void setSpotExponent(const float &spotExponent) {
+	inline void setSpotExponent(const float &spotExponent) {
 		_spotExponent = glm::clamp(spotExponent, 0.f, 128.f);
 	}
-	inline virtual void setSpotCutoff(const float &spotCutoff) {
+	inline void setSpotCutoff(const float &spotCutoff) {
 		_spotCutoff = glm::clamp(spotCutoff, 0.f, 180.f);
 		_spotCosCutoff = cosf(_spotCutoff * M_PI / 180.f);
 	}
-	inline virtual void setAttenuationConstant(const float &attenuationConstant) {
+	inline void setAttenuationConstant(const float &attenuationConstant) {
 		_attenuationConstant = glm::max(attenuationConstant, 0.f);
 	}
-	inline virtual void setAttenuationLinear(const float &attenuationLinear) {
+	inline void setAttenuationLinear(const float &attenuationLinear) {
 		_attenuationLinear = glm::max(attenuationLinear, 0.f);
 	}
-	inline virtual void setAttenuationQuadratic(const float &attenuationQuadratic) {
+	inline void setAttenuationQuadratic(const float &attenuationQuadratic) {
 		_attenuationQuadratic = glm::max(attenuationQuadratic, 0.f);
 	}
 
