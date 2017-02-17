@@ -4,17 +4,17 @@ SRCS = $(SRCDIR)/main.cpp \
        $(SRCDIR)/GFX/GL/Shader.cpp \
        $(SRCDIR)/GFX/GL/FBO.cpp \
        $(SRCDIR)/GFX/GL/VBO.cpp \
-	   $(SRCDIR)/GFX/GL/Texture.cpp \
-	   $(SRCDIR)/GFX/TGA.cpp \
-	   $(SRCDIR)/GFX/TextLabel.cpp \
-	   $(SRCDIR)/GFX/TextRenderer.cpp \
+       $(SRCDIR)/GFX/GL/Texture.cpp \
+       $(SRCDIR)/GFX/TGA.cpp \
+       $(SRCDIR)/GFX/TextLabel.cpp \
+       $(SRCDIR)/GFX/TextRenderer.cpp \
        $(SRCDIR)/GFX/Window.cpp \
-	   $(SRCDIR)/Game/GameEngine.cpp \
-	   $(SRCDIR)/GFX/RenderEngine.cpp \
-	   $(SRCDIR)/Input/InputManager.cpp \
-	   $(SRCDIR)/Input/Controller/FPSController.cpp \
+       $(SRCDIR)/Game/GameEngine.cpp \
+       $(SRCDIR)/GFX/RenderEngine.cpp \
+       $(SRCDIR)/Input/InputManager.cpp \
+       $(SRCDIR)/Input/Controller/FPSController.cpp \
        $(SRCDIR)/Input/Controller/TrackballController.cpp \
-	   $(SRCDIR)/Models/Model.cpp
+       $(SRCDIR)/Models/Model.cpp
 
 ASSIMP_PATH = Thirdparty/assimp
 ASSIMP_LIB_PATH = $(ASSIMP_PATH)/lib
