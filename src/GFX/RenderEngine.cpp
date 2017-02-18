@@ -125,7 +125,8 @@ int RenderEngine::setup() {
 	light.setDiffuse(glm::vec4(1.0, 0.0, 0.0, 1.0));
 	light.setSpecular(glm::vec4(1.0, 0.0, 0.0, 1.0));
 	light.setPosition(glm::vec4(0.0, 0.0, 2.0, 0.0));
-	light.setEnabled(true);
+	light.setAttenuationQuadratic(0.01);
+	light.setEnabled(1);
 	_lights->update();
 
 	_lights->attach(_shaderColor);
@@ -175,7 +176,7 @@ void RenderEngine::render() {
 	static float lightAngle = 0.f;
 
 	lightAngle += _gameData->dt;
-	_light.setPos(glm::rotate(glm::vec3(20, 20, 20), lightAngle, glm::vec3(0.0, 1.0, 0.0)));
+	_light.setPos(glm::rotate(glm::vec3(5, 5, 5), lightAngle, glm::vec3(0.0, 1.0, 0.0)));
 	_lights->data.lights[0].setPosition(glm::vec4(_light.pos(), 1.f));
 	_lights->update();
 

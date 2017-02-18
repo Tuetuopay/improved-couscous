@@ -44,9 +44,14 @@ layout (std140) uniform lights {
 };
 
 vec3 computeLight(Light light) {
-	if (light.enabled == 1)
+	if (light.enabled == 1) {
+		float d = length(light.position - ex_Position);
 		return dot(ex_Normal, normalize((light.position - ex_Position).xyz))
+		       * (1.0 / (light.attenuationConstant
+		                 + d * light.attenuationLinear
+		                 + d * d * light.attenuationQuadratic))
 		       * light.diffuse.rgb;
+	}
 	return vec3(0);
 }
 
