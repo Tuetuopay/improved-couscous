@@ -49,7 +49,7 @@ layout (std140) uniform lights {
 
 vec3 computeLight(Light light) {
 	if (light.enabled == 1)
-		return dot(ex_Normal, normalize((light.position - gl_Position).xyz))
+		return dot(ex_Normal, normalize((light.position - in_Model * vec4(in_Position, 1)).xyz))
 		       * light.diffuse.rgb;
 	return vec3(0);
 }
