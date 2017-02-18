@@ -47,6 +47,13 @@ layout (std140) uniform lights {
 	Light in_lights[8];
 };
 
+vec3 computeLight(Light light) {
+	if (light.enabled == 1)
+		return dot(ex_Normal, normalize((light.position - gl_Position).xyz))
+		       * light.diffuse.rgb;
+	return vec3(0);
+}
+
 void main() {
 	gl_Position = matMVP * in_Model * vec4(in_Position, 1);
 
@@ -57,46 +64,13 @@ void main() {
 	ex_ShadedColor = vec4(0.0, 0.0, 0.0, 1.0);
 	float intensity;
 
-	if (in_lights[0].enabled == 1) {
-		intensity = dot(ex_Normal, normalize((in_lights[0].position - gl_Position).xyz));
-		ex_ShadedColor.rgb += intensity * in_lights[0].diffuse.rgb;
-	}
-	if (in_lights[1].enabled == 1) {
-		intensity = dot(ex_Normal, normalize((in_lights[1].position - gl_Position).xyz));
-		ex_ShadedColor.rgb += intensity * in_lights[1].diffuse.rgb;
-	}
-	if (in_lights[2].enabled == 1) {
-		intensity = dot(ex_Normal, normalize((in_lights[2].position - gl_Position).xyz));
-		ex_ShadedColor.rgb += intensity * in_lights[2].diffuse.rgb;
-	}
-	if (in_lights[3].enabled == 1) {
-		intensity = dot(ex_Normal, normalize((in_lights[3].position - gl_Position).xyz));
-		ex_ShadedColor.rgb += intensity * in_lights[3].diffuse.rgb;
-	}
-	if (in_lights[4].enabled == 1) {
-		intensity = dot(ex_Normal, normalize((in_lights[4].position - gl_Position).xyz));
-		ex_ShadedColor.rgb += intensity * in_lights[4].diffuse.rgb;
-	}
-	if (in_lights[5].enabled == 1) {
-		intensity = dot(ex_Normal, normalize((in_lights[5].position - gl_Position).xyz));
-		ex_ShadedColor.rgb += intensity * in_lights[5].diffuse.rgb;
-	}
-	if (in_lights[6].enabled == 1) {
-		intensity = dot(ex_Normal, normalize((in_lights[6].position - gl_Position).xyz));
-		ex_ShadedColor.rgb += intensity * in_lights[6].diffuse.rgb;
-	}
-	if (in_lights[7].enabled == 1) {
-		intensity = dot(ex_Normal, normalize((in_lights[7].position - gl_Position).xyz));
-		ex_ShadedColor.rgb += intensity * in_lights[7].diffuse.rgb;
-	}
-
-	/*
-	for (int i = 0; i < 8; i++) {
-		if (in_lights[i].enabled == 1) {
-			intensity = dot(ex_Normal, normalize((in_lights[i].position - gl_Position).xyz));
-			ex_ShadedColor.rgb += intensity * in_lights[i].diffuse.rgb;
-		}
-	}
-	*/
+	ex_ShadedColor.rgb += computeLight(in_lights[0]);
+	ex_ShadedColor.rgb += computeLight(in_lights[1]);
+	ex_ShadedColor.rgb += computeLight(in_lights[2]);
+	ex_ShadedColor.rgb += computeLight(in_lights[3]);
+	ex_ShadedColor.rgb += computeLight(in_lights[4]);
+	ex_ShadedColor.rgb += computeLight(in_lights[5]);
+	ex_ShadedColor.rgb += computeLight(in_lights[6]);
+	ex_ShadedColor.rgb += computeLight(in_lights[7]);
 }
 
