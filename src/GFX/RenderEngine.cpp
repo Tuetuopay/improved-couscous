@@ -176,6 +176,8 @@ void RenderEngine::render() {
 
 	lightAngle += _gameData->dt;
 	_light.setPos(glm::rotate(glm::vec3(20, 20, 20), lightAngle, glm::vec3(0.0, 1.0, 0.0)));
+	_lights->data.lights[0].setPosition(glm::vec4(_light.pos(), 1.f));
+	_lights->update();
 
 	// Update FPS
 	_dts[_dtsNo++] = _gameData->dt;
