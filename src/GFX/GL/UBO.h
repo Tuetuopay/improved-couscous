@@ -37,21 +37,23 @@ public:
 	UBO(const std::string &name, const int &bindPoint = 0)
 	 : _ubo(0), _bindPoint(bindPoint), _name(name) {
 		glGenBuffers(1, &_ubo);
-		glBindBufferBase(GL_UNIFORM_BUFFER, _bindPoint, _ubo);
-		glBufferData(GL_UNIFORM_BUFFER, sizeof(data), &data, GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_UNIFORM_BUFFER, _ubo);
+		glBufferData(GL_UNIFORM_BUFFER, sizeof(data), nullptr, GL_STATIC_DRAW);
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 	}
 
 	virtual void update() const {
-		glBindBufferBase(GL_UNIFORM_BUFFER, _bindPoint, _ubo);
-		memcpy(glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY), &data, sizeof(T));
-		glUnmapBuffer(GL_UNIFORM_BUFFER);
+		glBindBuffer(GL_UNIFORM_BUFFER, _ubo);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(data), &data);
 	}
 
 	virtual void attach(const Shader *shader) const {
+		glBindBuffer(GL_UNIFORM_BUFFER, _ubo);
+		glBindBufferBase(GL_UNIFORM_BUFFER, _bindPoint, _ubo);
+
 		GLuint program = shader->program();
 		glUniformBlockBinding(
-			program, glGetUniformBlockIndex(program, _name.c_str()), _ubo
+			program, glGetUniformBlockIndex(program, _name.c_str()), _bindPoint
 		);
 	}
 
