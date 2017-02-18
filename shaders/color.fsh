@@ -31,6 +31,7 @@ in vec3 ex_Normal;
 out vec4 fragColor;
 
 uniform sampler2D tex;
+uniform vec3 camera;
 
 struct Light {
 	vec4 ambient, diffuse, specular, position;
@@ -45,8 +46,13 @@ layout (std140) uniform lights {
 
 vec3 computeLight(Light light) {
 	if (light.enabled == 1) {
-		float d = length(light.position - ex_Position);
-		return dot(ex_Normal, normalize((light.position - ex_Position).xyz))
+		vec3 lightDir = (light.position - ex_Position).xyz,
+		     viewDir = normalize(camera - ex_Position.xyz);
+		float d = length(lightDir);
+		vec3 H = normalize(viewDir + lightDir);
+
+		return (dot(ex_Normal, normalize(lightDir))
+		        + pow(max(0.0, dot(ex_Normal, H)), 20.0))
 		       * (1.0 / (light.attenuationConstant
 		                 + d * light.attenuationLinear
 		                 + d * d * light.attenuationQuadratic))
