@@ -23,16 +23,43 @@
 
 #version 330 core
 
+in vec4 ex_Position;
 in vec3 ex_Color;
 in vec2 ex_UV;
 in vec3 ex_Normal;
-in vec4 ex_ShadedColor;
 
 out vec4 fragColor;
 
 uniform sampler2D tex;
 
+struct Light {
+	vec4 ambient, diffuse, specular, position;
+	vec3 spotDirection;
+	float spotExponent, spotCutoff, spotCosCutoff;
+	float attenuationConstant, attenuationLinear, attenuationQuadratic;
+	int enabled;
+};
+layout (std140) uniform lights {
+	Light in_lights[8];
+};
+
+vec3 computeLight(Light light) {
+	if (light.enabled == 1)
+		return dot(ex_Normal, normalize((light.position - ex_Position).xyz))
+		       * light.diffuse.rgb;
+	return vec3(0);
+}
+
+
 void main() {
-	fragColor = ex_ShadedColor;
+	fragColor = vec4(0.0, 0.0, 0.0, 1.0);
+	fragColor.rgb += computeLight(in_lights[0]);
+	fragColor.rgb += computeLight(in_lights[1]);
+	fragColor.rgb += computeLight(in_lights[2]);
+	fragColor.rgb += computeLight(in_lights[3]);
+	fragColor.rgb += computeLight(in_lights[4]);
+	fragColor.rgb += computeLight(in_lights[5]);
+	fragColor.rgb += computeLight(in_lights[6]);
+	fragColor.rgb += computeLight(in_lights[7]);
 }
 

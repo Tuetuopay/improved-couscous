@@ -29,48 +29,19 @@ layout(location = 2) in vec3 in_Color;
 layout(location = 3) in vec3 in_Normal;
 layout(location = 4) in mat4 in_Model;
 
+out vec4 ex_Position;
 out vec3 ex_Color;
 out vec2 ex_UV;
 out vec3 ex_Normal;
-out vec4 ex_ShadedColor;
 
 uniform mat4 matMVP;
 
-struct Light {
-	vec4 ambient, diffuse, specular, position;
-	vec3 spotDirection;
-	float spotExponent, spotCutoff, spotCosCutoff;
-	float attenuationConstant, attenuationLinear, attenuationQuadratic;
-	int enabled;
-};
-layout (std140) uniform lights {
-	Light in_lights[8];
-};
-
-vec3 computeLight(Light light) {
-	if (light.enabled == 1)
-		return dot(ex_Normal, normalize((light.position - in_Model * vec4(in_Position, 1)).xyz))
-		       * light.diffuse.rgb;
-	return vec3(0);
-}
-
 void main() {
-	gl_Position = matMVP * in_Model * vec4(in_Position, 1);
+	ex_Position = in_Model * vec4(in_Position, 1);
+	gl_Position = matMVP * ex_Position;
 
 	ex_Color = in_Color;
 	ex_UV = in_UV;
 	ex_Normal = in_Normal;
-
-	ex_ShadedColor = vec4(0.0, 0.0, 0.0, 1.0);
-	float intensity;
-
-	ex_ShadedColor.rgb += computeLight(in_lights[0]);
-	ex_ShadedColor.rgb += computeLight(in_lights[1]);
-	ex_ShadedColor.rgb += computeLight(in_lights[2]);
-	ex_ShadedColor.rgb += computeLight(in_lights[3]);
-	ex_ShadedColor.rgb += computeLight(in_lights[4]);
-	ex_ShadedColor.rgb += computeLight(in_lights[5]);
-	ex_ShadedColor.rgb += computeLight(in_lights[6]);
-	ex_ShadedColor.rgb += computeLight(in_lights[7]);
 }
 
