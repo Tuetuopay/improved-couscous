@@ -49,7 +49,7 @@ public:
 	inline float attenuationConstant() { return _attenuationConstant; }
 	inline float attenuationLinear() { return _attenuationLinear; }
 	inline float attenuationQuadratic() { return _attenuationQuadratic; }
-	inline bool enabled() { return _enabled; }
+	inline GLint enabled() { return _enabled; }
 
 	inline void setAmbient(const glm::vec4 &ambient) {
 		_ambient = glm::clamp(ambient, glm::vec4(0), glm::vec4(1));
@@ -82,7 +82,7 @@ public:
 	inline void setAttenuationQuadratic(const float &attenuationQuadratic) {
 		_attenuationQuadratic = glm::max(attenuationQuadratic, 0.f);
 	}
-	inline void setEnabled(const bool &enabled) {
+	inline void setEnabled(const GLint &enabled) {
 		_enabled = enabled;
 	}
 
@@ -91,7 +91,7 @@ protected:
 	glm::vec3 _spotDirection;
 	float _spotExponent, _spotCutoff, _spotCosCutoff;
 	float _attenuationConstant, _attenuationLinear, _attenuationQuadratic;
-	bool _enabled;
+	GLint _enabled;
 	float __padding[2];
 };
 
