@@ -41,10 +41,10 @@ struct Light {
 	vec3 spotDirection;
 	float spotExponent, spotCutoff, spotCosCutoff;
 	float attenuationConstant, attenuationLinear, attenuationQuadratic;
+	bool enabled;
 };
 layout (std140) uniform lights {
 	Light in_lights[8];
-	bool in_enabled[8];
 };
 
 void main() {
@@ -57,10 +57,11 @@ void main() {
 	ex_ShadedColor = vec4(0.0, 0.0, 0.0, 1.0);
 
 	for (int i = 0; i < 8; i++) {
-		if (in_enabled[i]) {
-			float intensity = dot(ex_Normal, normalize(in_lights[i].position - gl_Position).xyz);
+		if (in_lights[i].enabled) {
+			float intensity = dot(ex_Normal, normalize((in_lights[i].position - gl_Position).xyz));
 			ex_ShadedColor.rgb += intensity * in_lights[i].diffuse.rgb;
 		}
 	}
+	ex_ShadedColor.rgb = in_lights[0].diffuse.rgb;
 }
 

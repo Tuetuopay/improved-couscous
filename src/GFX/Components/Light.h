@@ -35,7 +35,8 @@ public:
 		_ambient(0.0, 0.0, 0.0, 1.0), _diffuse(1.0, 1.0, 1.0, 1.0), _specular(1.0, 1.0, 1.0, 1.0),
 		_position(0.0, 0.0, 1.0, 0.0), _spotDirection(0.0, 0.0, -1.0), _spotExponent(0),
 		_spotCutoff(180), _spotCosCutoff(-1),
-		_attenuationConstant(1), _attenuationLinear(0), _attenuationQuadratic(0)
+		_attenuationConstant(1), _attenuationLinear(0), _attenuationQuadratic(0),
+		_enabled(false)
 	{}
 
 	inline glm::vec4 ambient() { return _ambient; }
@@ -48,6 +49,7 @@ public:
 	inline float attenuationConstant() { return _attenuationConstant; }
 	inline float attenuationLinear() { return _attenuationLinear; }
 	inline float attenuationQuadratic() { return _attenuationQuadratic; }
+	inline float enabled() { return _enabled; }
 
 	inline void setAmbient(const glm::vec4 &ambient) {
 		_ambient = glm::clamp(ambient, glm::vec4(0), glm::vec4(1));
@@ -80,6 +82,9 @@ public:
 	inline void setAttenuationQuadratic(const float &attenuationQuadratic) {
 		_attenuationQuadratic = glm::max(attenuationQuadratic, 0.f);
 	}
+	inline void setEnabled(const bool &enabled) {
+		_enabled = enabled;
+	}
 
 protected:
 	glm::vec4 _ambient, _diffuse, _specular, _position;
@@ -87,7 +92,8 @@ protected:
 	GLfloat __padding;
 	GLfloat _spotExponent, _spotCutoff, _spotCosCutoff;
 	GLfloat _attenuationConstant, _attenuationLinear, _attenuationQuadratic;
-	GLfloat __padding2[2];
+	bool _enabled;
+	GLfloat __padding2;
 };
 
 } }

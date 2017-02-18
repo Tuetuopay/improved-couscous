@@ -121,11 +121,11 @@ int RenderEngine::setup() {
 	_shaderDepth = new GL::Shader("depth");
 
 	_lights = new GL::UBO<LightUBO>("lights", 0);
-	_lights->data.enabled0 = true;
 	Components::Light &light = _lights->data.lights[0];
 	light.setDiffuse(glm::vec4(1.0, 0.0, 0.0, 1.0));
 	light.setSpecular(glm::vec4(1.0, 0.0, 0.0, 1.0));
 	light.setPosition(glm::vec4(0.0, 0.0, 2.0, 0.0));
+	light.setEnabled(true);
 	_lights->update();
 
 	_lights->attach(_shaderColor);

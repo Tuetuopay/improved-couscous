@@ -48,22 +48,6 @@ namespace GFX {
 
 typedef struct LightUBO {
 	Components::Light lights[8];
-	bool enabled0;
-	bool padding0[15];
-	bool enabled1;
-	bool padding1[15];
-	bool enabled2;
-	bool padding2[15];
-	bool enabled3;
-	bool padding3[15];
-	bool enabled4;
-	bool padding4[15];
-	bool enabled5;
-	bool padding5[15];
-	bool enabled6;
-	bool padding6[15];
-	bool enabled7;
-	bool padding7[15];
 } LightUBO;
 
 
