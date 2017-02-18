@@ -127,6 +127,23 @@ int RenderEngine::setup() {
 	light.setPosition(glm::vec4(0.0, 0.0, 2.0, 0.0));
 	light.setAttenuationQuadratic(0.01);
 	light.setEnabled(1);
+
+	Components::Light &light2 = _lights->data.lights[1];
+	light2.setDiffuse(glm::vec4(0.0, 1.0, 0.0, 1.0));
+	light2.setSpecular(glm::vec4(0.0, 1.0, 0.0, 1.0));
+	light2.setPosition(glm::vec4(0.0, 3.0, 3.0, 0.0));
+	light2.setAttenuationConstant(2);
+	light2.setAttenuationQuadratic(0.01);
+	light2.setEnabled(1);
+
+	Components::Light &light3 = _lights->data.lights[2];
+	light3.setDiffuse(glm::vec4(0.0, 0.0, 1.0, 1.0));
+	light3.setSpecular(glm::vec4(0.0, 1.0, 0.0, 1.0));
+	light3.setPosition(glm::vec4(0.0, 3.0, -3.0, 0.0));
+	light3.setAttenuationConstant(2);
+	light3.setAttenuationQuadratic(0.01);
+	light3.setEnabled(1);
+
 	_lights->update();
 
 	_lights->attach(_shaderColor);
