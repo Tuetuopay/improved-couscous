@@ -84,8 +84,10 @@ public:
 protected:
 	glm::vec4 _ambient, _diffuse, _specular, _position;
 	glm::vec3 _spotDirection;
-	float _spotExponent, _spotCutoff, _spotCosCutoff;
-	float _attenuationConstant, _attenuationLinear, _attenuationQuadratic;
+	GLfloat __padding;
+	GLfloat _spotExponent, _spotCutoff, _spotCosCutoff;
+	GLfloat _attenuationConstant, _attenuationLinear, _attenuationQuadratic;
+	GLfloat __padding2[2];
 };
 
 } }

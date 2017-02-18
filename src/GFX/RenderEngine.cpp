@@ -121,7 +121,7 @@ int RenderEngine::setup() {
 	_shaderDepth = new GL::Shader("depth");
 
 	_lights = new GL::UBO<LightUBO>("lights", 0);
-	_lights->data.enabled[0] = true;
+	_lights->data.enabled0 = true;
 	Components::Light &light = _lights->data.lights[0];
 	light.setDiffuse(glm::vec4(1.0, 0.0, 0.0, 1.0));
 	light.setSpecular(glm::vec4(1.0, 0.0, 0.0, 1.0));
@@ -252,7 +252,7 @@ void RenderEngine::render3D(GL::Shader *shader) {
 	shader->pushUniform("matMVP", 1, GL_FALSE, &_matMVP[0][0], 4);
 	_matMVP = biasMatrix * _matOrtho * _light.matrix();
 	shader->pushUniform("lightMVP", 1, GL_FALSE, &_matMVP[0][0], 4);
-	shader->pushUniform("light", _light.pos().x, _light.pos().y, _light.pos().z);
+	// shader->pushUniform("light", _light.pos().x, _light.pos().y, _light.pos().z);
 
 	_suzanne->render();
 	_ground->render();
