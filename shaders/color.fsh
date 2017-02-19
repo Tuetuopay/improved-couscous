@@ -59,6 +59,11 @@ float beckmann(float x, float roughness) {
 	float d = M_PI * roughness * pow(x, 2);
 	return exp(x2 / roughness) / d;
 }
+float ggx(float x, float roughness) {
+	roughness = pow(roughness, 4);
+	float d = pow(x, 2) * (roughness - 1.0) + 1.0;
+	return roughness / (M_PI * pow(d, 2));
+}
 float cookTorr(vec3 lightDir, vec3 viewDir, vec3 normal, float roughness, float fresnel) {
 	// Half angle vector
 	vec3 H = normalize(viewDir + lightDir);
@@ -70,7 +75,7 @@ float cookTorr(vec3 lightDir, vec3 viewDir, vec3 normal, float roughness, float 
 	      VH = max(dot(viewDir, H), 0.000001),
 	      x = 2.0 * NH / VH;
 
-	float D = beckmann(NH, roughness),          // Distribution term
+	float D = ggx(NH, roughness),               // Distribution term
 	      F = pow(1.0 - VN, fresnel),           // Fresnel term
 	      G = min(1.0, min(x * VN, x * LN));    // Geometry term
 
