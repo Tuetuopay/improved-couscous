@@ -44,11 +44,37 @@ layout (std140) uniform lights {
 	Light in_lights[8];
 };
 
+#define M_PI 3.141592653589793
+
 float lambert(vec3 lightDir, vec3 normal) {
 	return dot(lightDir, normal);
 }
 float blinnPhong(vec3 lightDir, vec3 viewDir, vec3 normal, float shininess) {
 	return pow(dot(normal, normalize(viewDir + lightDir)), shininess);
+}
+float beckmann(float x, float roughness) {
+	x = pow(max(x, 0.0001), 2);
+	roughness = pow(roughness, 2);
+	float x2 = (x - 1.0) / x;
+	float d = M_PI * roughness * pow(x, 2);
+	return exp(x2 / roughness) / d;
+}
+float cookTorr(vec3 lightDir, vec3 viewDir, vec3 normal, float roughness, float fresnel) {
+	// Half angle vector
+	vec3 H = normalize(viewDir + lightDir);
+
+	// Precompute some useful dot products
+	float VN = max(dot(viewDir, normal), 0.0),
+	      LN = max(dot(lightDir, normal), 0.0),
+	      NH = max(dot(normal, H), 0.0),
+	      VH = max(dot(viewDir, H), 0.000001),
+	      x = 2.0 * NH / VH;
+
+	float D = beckmann(NH, roughness),          // Distribution term
+	      F = pow(1.0 - VN, fresnel),           // Fresnel term
+	      G = min(1.0, min(x * VN, x * LN));    // Geometry term
+
+	return D * F * G / max(M_PI * VN * LN, 0.000001);
 }
 
 vec3 computeLight(Light light) {
@@ -58,7 +84,7 @@ vec3 computeLight(Light light) {
 		float d = length(lightDir);
 		lightDir = normalize(lightDir);
 
-		return (lambert(lightDir, ex_Normal) + blinnPhong(lightDir, viewDir, ex_Normal, 100.0))
+		return (lambert(lightDir, ex_Normal) + cookTorr(lightDir, viewDir, ex_Normal, 0.5, 0))
 		       * (1.0 / (light.attenuationConstant
 		                 + d * light.attenuationLinear
 		                 + d * d * light.attenuationQuadratic))
