@@ -44,15 +44,21 @@ layout (std140) uniform lights {
 	Light in_lights[8];
 };
 
+float lambert(vec3 lightDir, vec3 normal) {
+	return dot(lightDir, normal);
+}
+float blinnPhong(vec3 lightDir, vec3 viewDir, vec3 normal, float shininess) {
+	return pow(dot(normal, normalize(viewDir + lightDir)), shininess);
+}
+
 vec3 computeLight(Light light) {
 	if (light.enabled == 1) {
 		vec3 lightDir = (light.position - ex_Position).xyz,
 		     viewDir = normalize(camera - ex_Position.xyz);
 		float d = length(lightDir);
-		vec3 H = normalize(viewDir + lightDir);
+		lightDir = normalize(lightDir);
 
-		return (dot(ex_Normal, normalize(lightDir))
-		        + pow(max(0.0, dot(ex_Normal, H)), 20.0))
+		return (lambert(lightDir, ex_Normal) + blinnPhong(lightDir, viewDir, ex_Normal, 100.0))
 		       * (1.0 / (light.attenuationConstant
 		                 + d * light.attenuationLinear
 		                 + d * d * light.attenuationQuadratic))
