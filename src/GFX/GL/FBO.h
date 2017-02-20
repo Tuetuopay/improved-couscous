@@ -33,10 +33,10 @@ namespace GFX { namespace GL {
 class FBO {
 public:
 	FBO(double screenWidth, double screenHeight,
-	    bool renderTexture = true, bool depthTexture = true, bool compareRefToTexture = false);
+	    int renderTexture = 1, bool depthTexture = true, bool compareRefToTexture = false);
 	~FBO ();
 
-	void addRenderTexture();
+	void addRenderTexture(const int count = 1);
 	// Set argument to true if you plan to use it as a sampler2DShadow in a shader
 	void addDepthTexture(bool compareRefToTexture = false);
 
@@ -46,16 +46,17 @@ public:
 	void enable ();
 	void disable ();
 
-	void bindRender (GLint textureUnit);
+	void bindRender (GLint textureUnit, const int renderNo = 0);
 	void bindDepth (GLint textureUnit);
 
 	GLuint depthTexture ();
-	GLuint renderTexture ();
+	GLuint renderTexture (const int renderNo = 0);
 	GLuint frameBuffer ();
 
 private:
 	double _w, _h;
 	GLuint _bufID, _renderTexture[FBO_MAX_RENDER_TEXTURE], _depthTexture;
+	int _renderCount;
 };
 
 }}

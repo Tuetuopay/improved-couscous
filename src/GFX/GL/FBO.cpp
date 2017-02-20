@@ -25,30 +25,39 @@
 
 namespace GFX { namespace GL {
 
-FBO::FBO (double screenWidth, double screenHeight, bool renderTexture, bool depthTexture, bool compareRefToTexture)
- : _w(screenWidth), _h(screenHeight), _renderTexture{0}, _depthTexture(0) {
+FBO::FBO (double screenWidth, double screenHeight,
+          int renderTexture, bool depthTexture, bool compareRefToTexture)
+ : _w(screenWidth), _h(screenHeight),
+   _renderTexture{0}, _depthTexture(0), _renderCount(renderTexture) {
 	glGenFramebuffers (1, &_bufID);
 	glBindFramebuffer (GL_FRAMEBUFFER, _bufID);
 
-	if (renderTexture) addRenderTexture();
+	if (renderTexture) addRenderTexture(renderTexture);
 	if (depthTexture)  addDepthTexture(compareRefToTexture);
 
 	glBindTexture (GL_TEXTURE_2D, 0);
 	glBindFramebuffer (GL_FRAMEBUFFER, 0);
 }
 
-void FBO::addRenderTexture() {
-	glGenTextures (1, _renderTexture);
-	glBindTexture(GL_TEXTURE_2D, _renderTexture[0]);
-	// No texel interpolation
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA8, _w, _h, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
-	glFramebufferTexture2D (
-		GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _renderTexture[0], 0
-	);
+void FBO::addRenderTexture(const int count) {
+	_renderCount = count;
+
+	if (_renderCount <= 0) return;
+	if (_renderCount >= FBO_MAX_RENDER_TEXTURE) _renderCount = FBO_MAX_RENDER_TEXTURE;
+
+	glGenTextures (count, _renderTexture);
+	for (int i = 0; i < count; i++) {
+		glBindTexture(GL_TEXTURE_2D, _renderTexture[i]);
+		// No texel interpolation
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA8, _w, _h, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+		glFramebufferTexture2D (
+			GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, _renderTexture[i], 0
+		);
+	}
 }
 void FBO::addDepthTexture(bool compareRefToTexture) {
 	glGenTextures (1, &_depthTexture);
@@ -74,9 +83,11 @@ void FBO::disable() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void FBO::bindRender (GLint textureUnit) {
+void FBO::bindRender (GLint textureUnit, const int renderNo) {
+	if (renderNo < 0 || renderNo >= _renderCount) return;
+
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
-	glBindTexture(GL_TEXTURE_2D, _renderTexture[0]);
+	glBindTexture(GL_TEXTURE_2D, _renderTexture[renderNo]);
 }
 void FBO::bindDepth (GLint textureUnit) {
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
@@ -86,8 +97,10 @@ void FBO::bindDepth (GLint textureUnit) {
 GLuint FBO::depthTexture() {
 	return _depthTexture;
 }
-GLuint FBO::renderTexture() {
-	return _renderTexture[0];
+GLuint FBO::renderTexture(const int renderNo) {
+	if (renderNo < 0 || renderNo >= _renderCount) return 0;
+
+	return _renderTexture[renderNo];
 }
 GLuint FBO::frameBuffer() {
 	return _bufID;
@@ -103,7 +116,7 @@ void FBO::unbind() {
 FBO::~FBO () {
 	glDeleteFramebuffers (1, &_bufID);
 	glDeleteTextures (1, &_depthTexture);
-	glDeleteTextures (1, _renderTexture);
+	glDeleteTextures (_renderCount, _renderTexture);
 }
 
 }}
