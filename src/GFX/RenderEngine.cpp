@@ -165,10 +165,6 @@ int RenderEngine::setup() {
 	_textRenderer2D = new TextRenderer();
 
 	// Test
-	std::shared_ptr<TextLabel> label(
-		new TextLabel("This is a test!\nHello World", glm::vec3(0.f, 4.f, 0.f))
-	);
-	_textRenderer3D->addLabel(label);
 	_labelFPS = std::shared_ptr<TextLabel>(
 		new TextLabel("FPS = \nx,y,z = ", glm::vec3(0.f, 0.f, 0.f))
 	);
