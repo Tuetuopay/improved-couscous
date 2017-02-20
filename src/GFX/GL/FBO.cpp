@@ -68,29 +68,19 @@ void FBO::addDepthTexture(bool compareRefToTexture) {
 }
 
 void FBO::enable() {
-	glDisable(GL_TEXTURE_2D);
-	glBindTexture (GL_TEXTURE_2D, 0);
-	// glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, _bufID);
-	 // glClear(GL_DEPTH_BUFFER_BIT);	/* Already done by the engine */
-	//glColorMask(false, false, false, false);
-	// glCullFace(GL_BACK);				/* Already done in the engine */
 }
 void FBO::disable() {
-
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void FBO::bindRender (GLint textureUnit) {
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	glBindTexture(GL_TEXTURE_2D, _renderTexture[0]);
-	// glActiveTexture (GL_TEXTURE0 + textureUnit);
-	// glBindTexture(GL_TEXTURE_2D, _renderTexture);
 }
 void FBO::bindDepth (GLint textureUnit) {
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	glBindTexture(GL_TEXTURE_2D, _depthTexture);
-	// glActiveTexture (GL_TEXTURE0 + textureUnit);
-	// glBindTexture(GL_TEXTURE_2D, _depthTexture);
 }
 
 GLuint FBO::depthTexture() {
