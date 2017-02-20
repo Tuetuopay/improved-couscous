@@ -82,6 +82,16 @@ float cookTorr(vec3 lightDir, vec3 viewDir, vec3 normal, float roughness, float 
 	return D * F * G / max(M_PI * VN * LN, 0.000001);
 }
 
+float spotCutoff(Light light, vec3 lightDir) {
+	float spotCos = dot(light.spotDirection, -lightDir);
+	if (spotCos > light.spotCosCutoff) {
+		spotCos = (spotCos - light.spotCosCutoff) / (1.0 - light.spotCosCutoff);
+		return pow(spotCos, light.spotExponent);
+	}
+	else
+		return 0.0;
+}
+
 vec3 computeLight(Light light) {
 	if (light.enabled == 1) {
 		vec3 lightDir = (light.position - ex_Position).xyz,
@@ -94,7 +104,8 @@ vec3 computeLight(Light light) {
 		        + cookTorr(lightDir, viewDir, ex_Normal, 0.5, 0) * light.specular.rgb)
 		       * (1.0 / (light.attenuationConstant
 		                 + d * light.attenuationLinear
-		                 + d * d * light.attenuationQuadratic));
+		                 + d * d * light.attenuationQuadratic))
+		       * spotCutoff(light, lightDir);
 	}
 	return vec3(0);
 }

@@ -122,8 +122,8 @@ int RenderEngine::setup() {
 
 	_lights = new GL::UBO<LightUBO>("lights", 0);
 	Components::Light &light = _lights->data.lights[0];
-	light.setDiffuse(glm::vec4(1.0, 0.0, 0.0, 1.0));
-	light.setSpecular(glm::vec4(1.0, 0.0, 0.0, 1.0));
+	light.setDiffuse (glm::vec4(1.0, 1.0, 1.0, 1.0));
+	light.setSpecular(glm::vec4(1.0, 1.0, 1.0, 1.0));
 	light.setPosition(glm::vec4(0.0, 0.0, 2.0, 0.0));
 	light.setAttenuationQuadratic(0.01);
 	light.setEnabled(1);
@@ -132,13 +132,16 @@ int RenderEngine::setup() {
 	light2.setDiffuse(glm::vec4(0.0, 1.0, 0.0, 1.0));
 	light2.setSpecular(glm::vec4(0.0, 1.0, 0.0, 1.0));
 	light2.setPosition(glm::vec4(0.0, 3.0, 3.0, 0.0));
+	light2.setSpotDirection(glm::vec3(0.0, -3.0, -3.0));
+	light2.setSpotExponent(1.f);
+	light2.setSpotCutoff(20.f);
 	light2.setAttenuationConstant(2);
 	light2.setAttenuationQuadratic(0.01);
 	light2.setEnabled(1);
 
 	Components::Light &light3 = _lights->data.lights[2];
 	light3.setDiffuse(glm::vec4(0.0, 0.0, 1.0, 1.0));
-	light3.setSpecular(glm::vec4(0.0, 1.0, 0.0, 1.0));
+	light3.setSpecular(glm::vec4(0.0, 0.0, 1.0, 1.0));
 	light3.setPosition(glm::vec4(0.0, 3.0, -3.0, 0.0));
 	light3.setAttenuationConstant(2);
 	light3.setAttenuationQuadratic(0.01);

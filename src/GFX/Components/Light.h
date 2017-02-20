@@ -64,7 +64,7 @@ public:
 		_position = position;
 	}
 	inline void setSpotDirection(const glm::vec3 &spotDirection) {
-		_spotDirection = spotDirection;
+		_spotDirection = glm::normalize(spotDirection);
 	}
 	inline void setSpotExponent(const float &spotExponent) {
 		_spotExponent = glm::clamp(spotExponent, 0.f, 128.f);
