@@ -47,6 +47,7 @@ public:
 	void disable ();
 
 	void bindRender (GLint textureUnit, const int renderNo = 0);
+	void bindRenders (GLint baseTextureUnit);
 	void bindDepth (GLint textureUnit);
 
 	GLuint depthTexture ();

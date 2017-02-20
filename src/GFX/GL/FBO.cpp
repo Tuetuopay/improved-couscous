@@ -89,6 +89,12 @@ void FBO::bindRender (GLint textureUnit, const int renderNo) {
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	glBindTexture(GL_TEXTURE_2D, _renderTexture[renderNo]);
 }
+void FBO::bindRenders(GLint baseTextureUnit) {
+	for (int i = 0; i < _renderCount; i++) {
+		glActiveTexture(GL_TEXTURE0 + baseTextureUnit + i);
+		glBindTexture(GL_TEXTURE_2D, _renderTexture[i]);
+	}
+}
 void FBO::bindDepth (GLint textureUnit) {
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	glBindTexture(GL_TEXTURE_2D, _depthTexture);

@@ -245,10 +245,10 @@ void RenderEngine::render() {
 	_shaderSSAO->useShader(true);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glDisable(GL_DEPTH_TEST);
-	_fbo->bindRender(0);
+	_fbo->bindRenders(0);
 	_fbo->bindDepth(1);
 	_fboLight->bindDepth(2);
-	_fboShadow->bindRender(3);
+	_fboShadow->bindRenders(3);
 	_square->render();
 
 	glDisable(GL_CULL_FACE);
