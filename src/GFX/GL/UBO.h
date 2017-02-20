@@ -57,6 +57,21 @@ public:
 		);
 	}
 
+	/**
+	 * Returns the block size. This is useful to debug incorrect UBOs since this value should match
+	 * sizeof(T)
+	 */
+	virtual GLint blockSize(const Shader *shader) const {
+		glBindBuffer(GL_UNIFORM_BUFFER, _ubo);
+		glBindBufferBase(GL_UNIFORM_BUFFER, _bindPoint, _ubo);
+
+		GLuint program = shader->program();
+		GLuint blockIndex = glGetUniformBlockIndex(program, _name.c_str());
+		GLint blockSize;
+		glGetActiveUniformBlockiv(program, blockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &blockSize);
+		return blockSize;
+	}
+
 	inline virtual const std::string& name() const { return _name; }
 	inline virtual const int& bindPoint() const { return _bindPoint; }
 
