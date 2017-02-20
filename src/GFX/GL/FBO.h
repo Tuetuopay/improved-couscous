@@ -26,6 +26,8 @@
 
 #include "GL.h"
 
+#define FBO_MAX_RENDER_TEXTURE 8
+
 namespace GFX { namespace GL {
 
 class FBO {
@@ -53,7 +55,7 @@ public:
 
 private:
 	double _w, _h;
-	GLuint _bufID, _renderTexture, _depthTexture;
+	GLuint _bufID, _renderTexture[FBO_MAX_RENDER_TEXTURE], _depthTexture;
 };
 
 }}

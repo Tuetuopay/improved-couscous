@@ -26,7 +26,7 @@
 namespace GFX { namespace GL {
 
 FBO::FBO (double screenWidth, double screenHeight, bool renderTexture, bool depthTexture, bool compareRefToTexture)
- : _w(screenWidth), _h(screenHeight), _renderTexture(0), _depthTexture(0) {
+ : _w(screenWidth), _h(screenHeight), _renderTexture{0}, _depthTexture(0) {
 	glGenFramebuffers (1, &_bufID);
 	glBindFramebuffer (GL_FRAMEBUFFER, _bufID);
 
@@ -38,8 +38,8 @@ FBO::FBO (double screenWidth, double screenHeight, bool renderTexture, bool dept
 }
 
 void FBO::addRenderTexture() {
-	glGenTextures (1, &_renderTexture);
-	glBindTexture(GL_TEXTURE_2D, _renderTexture);
+	glGenTextures (1, _renderTexture);
+	glBindTexture(GL_TEXTURE_2D, _renderTexture[0]);
 	// No texel interpolation
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -47,7 +47,7 @@ void FBO::addRenderTexture() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA8, _w, _h, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 	glFramebufferTexture2D (
-		GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _renderTexture, 0
+		GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _renderTexture[0], 0
 	);
 }
 void FBO::addDepthTexture(bool compareRefToTexture) {
@@ -82,7 +82,7 @@ void FBO::disable() {
 
 void FBO::bindRender (GLint textureUnit) {
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
-	glBindTexture(GL_TEXTURE_2D, _renderTexture);
+	glBindTexture(GL_TEXTURE_2D, _renderTexture[0]);
 	// glActiveTexture (GL_TEXTURE0 + textureUnit);
 	// glBindTexture(GL_TEXTURE_2D, _renderTexture);
 }
@@ -97,7 +97,7 @@ GLuint FBO::depthTexture() {
 	return _depthTexture;
 }
 GLuint FBO::renderTexture() {
-	return _renderTexture;
+	return _renderTexture[0];
 }
 GLuint FBO::frameBuffer() {
 	return _bufID;
@@ -113,7 +113,7 @@ void FBO::unbind() {
 FBO::~FBO () {
 	glDeleteFramebuffers (1, &_bufID);
 	glDeleteTextures (1, &_depthTexture);
-	glDeleteTextures (1, &_renderTexture);
+	glDeleteTextures (1, _renderTexture);
 }
 
 }}
