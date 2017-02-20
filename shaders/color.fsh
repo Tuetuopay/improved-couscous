@@ -89,11 +89,12 @@ vec3 computeLight(Light light) {
 		float d = length(lightDir);
 		lightDir = normalize(lightDir);
 
-		return (lambert(lightDir, ex_Normal) + cookTorr(lightDir, viewDir, ex_Normal, 0.5, 0))
+		return (light.ambient.rgb
+		        + lambert(lightDir, ex_Normal) * light.diffuse.rgb
+		        + cookTorr(lightDir, viewDir, ex_Normal, 0.5, 0) * light.specular.rgb)
 		       * (1.0 / (light.attenuationConstant
 		                 + d * light.attenuationLinear
-		                 + d * d * light.attenuationQuadratic))
-		       * light.diffuse.rgb;
+		                 + d * d * light.attenuationQuadratic));
 	}
 	return vec3(0);
 }
