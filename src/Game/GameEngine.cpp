@@ -80,6 +80,39 @@ void GameEngine::processKeyboard(int key, int scancode, int action, int mods) {
 	case HID_KEY_ESCAPE:
 		_running = false;
 		break;
+
+	case HID_KEY_0:
+		if(action == HID_PRESS)
+			_renderEngine->toggleLight(0);
+		break;
+	case HID_KEY_1:
+		if(action == HID_PRESS)
+			_renderEngine->toggleLight(1);
+		break;
+	case HID_KEY_2:
+		if(action == HID_PRESS)
+			_renderEngine->toggleLight(2);
+		break;
+	case HID_KEY_3:
+		if(action == HID_PRESS)
+			_renderEngine->toggleLight(3);
+		break;
+	case HID_KEY_4:
+		if(action == HID_PRESS)
+			_renderEngine->toggleLight(4);
+		break;
+	case HID_KEY_5:
+		if(action == HID_PRESS)
+			_renderEngine->toggleLight(5);
+		break;
+	case HID_KEY_6:
+		if(action == HID_PRESS)
+			_renderEngine->toggleLight(6);
+		break;
+	case HID_KEY_7:
+		if(action == HID_PRESS)
+			_renderEngine->toggleLight(7);
+		break;
 	}
 }
 void GameEngine::processText(std::string c) {

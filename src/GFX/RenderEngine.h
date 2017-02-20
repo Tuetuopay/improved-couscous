@@ -74,6 +74,12 @@ public:
 	inline void setGameEngine(Game::GameEngine *engine) { _gameEngine = engine; }
 	inline void setGameData(Game::GameData *data) { _gameData = data; }
 
+	inline void toggleLight(int i) {
+		Components::Light &light = _lights->data.lights[i];
+		light.setEnabled(!light.enabled());
+		_lights->update();
+	}
+
 private:
 	// Static instance
 	static RenderEngine *_instance;
