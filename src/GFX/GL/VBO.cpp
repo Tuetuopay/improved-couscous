@@ -31,7 +31,7 @@ VBO::VBO (const float *vertices, const float *texture, const float *colors, cons
 		  int nVertices, const GLuint *indexes, int nIndexes, GLuint gltexture, GLenum drawMode,
 		  int vertexSize, int colorSize, int textureSize)
 	: _texture(gltexture), _bufInstance(0), _nVertex(nVertices), _nIndexes(nIndexes),
-	  _mode(drawMode), _instanceData(nullptr)
+	  _mode(drawMode), _instanceData(nullptr), _bufIndexes(0)
 {
 	// Check that element sizes are correct
 	if (vertexSize < 2) vertexSize = 2;
